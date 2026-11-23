@@ -426,7 +426,7 @@
 
     .stock.out {
       color: var(--danger);
-      }
+    }
 
     .add-btn {
       width: 100%;
@@ -687,9 +687,13 @@
       background: #ffffff;
       border-top: 1px solid var(--border);
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       padding: 6px 4px;
       z-index: 45;
+    }
+
+    .bottom-nav.admin-unlocked {
+      grid-template-columns: repeat(4, 1fr);
     }
 
     .nav-btn {
@@ -787,7 +791,7 @@
       <input type="text" id="searchInput" placeholder="পণ্য খুঁজুন..." oninput="renderProducts()" />
       <button class="search-btn" onclick="renderProducts()">খুঁজুন</button>
     </div>
-    <button class="notif-bell-btn" onclick="openNotificationsModal()" title="অর্ডার নোটিফিকেশন">
+    <button class="notif-bell-btn" id="notifBellBtn" style="display:none;" onclick="openNotificationsModal()" title="অর্ডার নোটিফিকেশন">
       🔔<span class="notif-dot" id="notifUnreadCount">0</span>
     </button>
   </header>
@@ -838,7 +842,7 @@
           <li>আমাদের ভুল বা ত্রুটিপূর্ণ পণ্যের ক্ষেত্রে রিটার্ন ডেলিভারি চার্জ কোম্পানি বহন করবে; মত পরিবর্তনজনিত ক্ষেত্রে ডেলিভারি চার্জ ক্রেতাকে দিতে হবে।</li>
           <li>রিটার্ন/সহায়তার জন্য হটলাইন/হোয়াটসঅ্যাপ <strong>01611110611</strong> বা কন্টাক্ট নম্বর <strong>01911426468</strong>-এ যোগাযোগ করুন।</li>
         </ul>
-          </div>
+      </div>
     </section>
 
     <!-- ORDERS TAB -->
@@ -849,7 +853,7 @@
           <span id="orderSummaryCount" style="font-size:12px; color:var(--muted);"></span>
         </div>
 
-        <div class="flex-between no-print" style="margin-bottom:10px;">
+         <div class="flex-between no-print" style="margin-bottom:10px;">
           <input type="text" id="orderSearchInput" class="form-control" style="max-width:240px;" placeholder="অর্ডার আইডি / নাম / ট্র্যাকিং..." oninput="renderOrders()" />
           <select id="orderStatusFilter" class="var-select" style="max-width:160px;" onchange="renderOrders()">
             <option value="all">সব স্ট্যাটাস</option>
@@ -956,8 +960,13 @@
       </div>
     </section>
 
-    <!-- STORE MANAGER / ADMIN TAB -->
+    <!-- STORE MANAGER / ADMIN TAB (PIN LOCKED FOR OWNER ONLY) -->
     <section id="tab-admin" style="display:none;">
+      <div class="panel flex-between">
+        <strong>🔐 স্টোর ম্যানেজার (অ্যাডমিন মোড সক্রিয়)</strong>
+        <button type="button" class="btn-danger" onclick="lockAdminMode()">লক করুন</button>
+      </div>
+
       <!-- Store Branding, Top Banner Upload & Pixel Settings -->
       <div class="panel">
         <div class="section-title"><span>স্টোর ব্যানার, ব্র্যান্ডিং ও পিক্সেল সেটিংস</span></div>
@@ -1125,7 +1134,7 @@
     </section>
 
     <!-- Store Footer -->
-    <footer class="store-footer">
+     <footer class="store-footer">
       <div class="footer-grid">
         <div>
           <strong id="footerCompanyName">বাগেরহাট ফ্রেশ২৪</strong>
@@ -1197,7 +1206,7 @@
   <div class="toast" id="toastBox"></div>
 
   <!-- Bottom Navigation -->
-  <nav class="bottom-nav">
+  <nav class="bottom-nav" id="bottomNav">
     <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
       <span>🏠</span>
       <span>হোম</span>
@@ -1211,14 +1220,16 @@
       <span>🛒</span>
       <span>কার্ট</span>
     </button>
-    <button class="nav-btn" id="nav-admin" onclick="switchTab('admin')">
+    <button class="nav-btn" id="nav-admin" style="display:none;" onclick="switchTab('admin')">
       <span>⚙️</span>
       <span>স্টোর ম্যানেজার</span>
     </button>
   </nav>
 
   <script>
-    const STORAGE_KEY = "bagerhat_fresh24_store_v4";
+    const STORAGE_KEY = "bagerhat_fresh24_store_v5";
+    const ADMIN_ACCESS_PIN = "2424";
+    const ADMIN_UNLOCK_KEY = "bf24_admin_unlocked_session";
 
     const DEFAULT_DATA = {
       store: {
@@ -1292,6 +1303,50 @@
     let state = loadState();
     let tempUploadedImages = [];
     let tempUploadedVideo = "";
+
+    function isAdminUnlocked() {
+      return sessionStorage.getItem(ADMIN_UNLOCK_KEY) === "1";
+    }
+
+    function applyVisitorAdminVisibility() {
+      const unlocked = isAdminUnlocked();
+      const nav = document.getElementById("bottomNav");
+      const adminNavBtn = document.getElementById("nav-admin");
+      const adminSec = document.getElementById("tab-admin");
+      const bellBtn = document.getElementById("notifBellBtn");
+
+      if (nav) nav.classList.toggle("admin-unlocked", unlocked);
+      if (adminNavBtn) adminNavBtn.style.display = unlocked ? "flex" : "none";
+      if (bellBtn) bellBtn.style.display = unlocked ? "inline-block" : "none";
+      if (adminSec && !unlocked) {
+        adminSec.style.display = "none";
+        if (document.getElementById("liveAlertBar")) {
+          document.getElementById("liveAlertBar").classList.remove("show");
+        }
+      }
+    }
+
+    function promptAdminUnlock() {
+      const pin = prompt("স্টোর ম্যানেজার পিন লিখুন:");
+      if (pin === ADMIN_ACCESS_PIN) {
+        sessionStorage.setItem(ADMIN_UNLOCK_KEY, "1");
+        applyVisitorAdminVisibility();
+        switchTab("admin");
+        showToast("স্টোর ম্যানেজার আনলক হয়েছে।");
+      } else if (pin !== null) {
+        showToast("ভুল পিন!");
+        switchTab("home");
+      } else {
+        switchTab("home");
+      }
+    }
+
+    function lockAdminMode() {
+      sessionStorage.removeItem(ADMIN_UNLOCK_KEY);
+      applyVisitorAdminVisibility();
+      switchTab("home");
+      showToast("স্টোর ম্যানেজার লক করা হয়েছে।");
+    }
 
     function loadState() {
       try {
@@ -1417,16 +1472,19 @@
       });
       saveState();
       updateNotifBadge();
-      playNotificationBeep();
 
-      const rawPhone = (state.store.notifyPhone || state.store.hotlinePhone || "01611110611").replace(/\D/g, "");
-      const waPhone = rawPhone.startsWith("88") ? rawPhone : `88${rawPhone}`;
-      const waMsg = encodeURIComponent(summary);
-      const waUrl = `https://wa.me/${waPhone}?text=${waMsg}`;
+      // Show owner live notification bar only when admin mode is unlocked
+      if (isAdminUnlocked()) {
+        playNotificationBeep();
+        const rawPhone = (state.store.notifyPhone || state.store.hotlinePhone || "01611110611").replace(/\D/g, "");
+        const waPhone = rawPhone.startsWith("88") ? rawPhone : `88${rawPhone}`;
+        const waMsg = encodeURIComponent(summary);
+        const waUrl = `https://wa.me/${waPhone}?text=${waMsg}`;
 
-      document.getElementById("liveAlertText").textContent = summary;
-      document.getElementById("liveAlertWaLink").href = waUrl;
-      document.getElementById("liveAlertBar").classList.add("show");
+        document.getElementById("liveAlertText").textContent = summary;
+        document.getElementById("liveAlertWaLink").href = waUrl;
+        document.getElementById("liveAlertBar").classList.add("show");
+      }
     }
 
     function updateNotifBadge() {
@@ -1435,6 +1493,7 @@
     }
 
     function openNotificationsModal() {
+      if (!isAdminUnlocked()) return;
       (state.notifications || []).forEach((n) => (n.unread = false));
       saveState();
       updateNotifBadge();
@@ -1542,10 +1601,22 @@
     }
 
     function switchTab(tabName) {
+      if (tabName === "admin" && !isAdminUnlocked()) {
+        promptAdminUnlock();
+        return;
+      }
+
       ["home", "orders", "cart", "admin"].forEach((t) => {
-        document.getElementById(`tab-${t}`).style.display = t === tabName ? "block" : "none";
-        document.getElementById(`nav-${t}`).classList.toggle("active", t === tabName);
+        const sec = document.getElementById(`tab-${t}`);
+        const navBtn = document.getElementById(`nav-${t}`);
+        if (t === "admin" && !isAdminUnlocked()) {
+          if (sec) sec.style.display = "none";
+          return;
+        }
+        if (sec) sec.style.display = t === tabName ? "block" : "none";
+        if (navBtn) navBtn.classList.toggle("active", t === tabName);
       });
+
       if (tabName === "cart") renderCart();
       if (tabName === "orders") renderOrders();
       if (tabName === "admin") renderAdmin();
@@ -1561,7 +1632,7 @@
             `<button class="cat-btn ${state.selectedCategory === c ? "active" : ""}" onclick="selectCategory('${escapeHtml(c)}')">${escapeHtml(c)}</button>`
         )
         .join("");
-      }
+    }
 
     function selectCategory(cat) {
       state.selectedCategory = cat;
@@ -1868,7 +1939,7 @@
       saveState();
       updateCartBadge();
       renderCart();
-    }
+      }
 
     function applyCoupon() {
       const code = (document.getElementById("couponInput").value || "").trim().toUpperCase();
@@ -2029,7 +2100,7 @@
       updateCartBadge();
       renderProducts();
       pushOrderNotification(order, "নতুন অর্ডার এসেছে");
-      showToast(`অর্ডার ${order.id} সম্পন্ন হয়েছে ও নোটিফিকেশন পাঠানো হয়েছে!`);
+      showToast(`অর্ডার ${order.id} সম্পন্ন হয়েছে!`);
       switchTab("orders");
     }
 
@@ -2312,7 +2383,7 @@
         return;
       }
       btn.closest("tr").remove();
-    }
+      }
 
     function previewNewMedia() {
       const imgFiles = Array.from(document.getElementById("newProdImages").files || []).slice(0, 5);
@@ -2504,6 +2575,8 @@
     }
 
     function renderAdmin() {
+      if (!isAdminUnlocked()) return;
+
       const prodContainer = document.getElementById("adminProductsList");
       prodContainer.innerHTML = state.products
         .map((p) => {
@@ -2583,11 +2656,19 @@
 
     // Init
     applyBranding();
+    applyVisitorAdminVisibility();
     renderCategories();
     renderProducts();
     updateCartBadge();
     updateNotifBadge();
     trackPixelEvent("PageView");
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("admin") === "1" && !isAdminUnlocked()) {
+      promptAdminUnlock();
+    } else if (isAdminUnlocked()) {
+      renderAdmin();
+    }
   </script>
 </body>
 </html>
