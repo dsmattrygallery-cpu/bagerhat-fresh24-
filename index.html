@@ -29,10 +29,9 @@
     body {
       background: var(--bg);
       color: var(--text);
-      padding-bottom: 94px;
+      padding-bottom: 96px;
     }
 
-    /* Live Order Alert Banner */
     .live-alert-bar {
       background: #064e3b;
       color: #ecfdf5;
@@ -49,7 +48,6 @@
       display: flex;
     }
 
-    /* Top Contact Strip */
     .contact-strip {
       background: #111827;
       color: #f9fafb;
@@ -68,7 +66,6 @@
       font-weight: 700;
     }
 
-    /* Header */
     .topbar {
       position: sticky;
       top: 0;
@@ -113,7 +110,7 @@
       font-weight: 700;
       font-size: 14px;
       color: var(--text);
-      max-width: 105px;
+      max-width: 100px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -178,7 +175,6 @@
       padding: 12px;
     }
 
-    /* Hero Banner */
     .hero {
       position: relative;
       background: linear-gradient(135deg, var(--primary), var(--accent));
@@ -226,7 +222,6 @@
       margin-bottom: 10px;
     }
 
-    /* Offers Strip */
     .offers-box {
       background: #fff7ed;
       border: 1px solid #fed7aa;
@@ -270,7 +265,6 @@
       margin-bottom: 12px;
     }
 
-    /* Category Pills */
     .cat-row {
       display: flex;
       gap: 8px;
@@ -297,7 +291,6 @@
       border-color: var(--primary);
     }
 
-    /* Product Grid */
     .section-title {
       font-size: 16px;
       font-weight: 700;
@@ -463,7 +456,6 @@
       cursor: not-allowed;
     }
 
-    /* Panels / Cards */
     .panel {
       background: #fff;
       border: 1px solid var(--border);
@@ -572,6 +564,14 @@
       background: #fafafa;
     }
 
+    .delivered-box {
+      border: 1px solid #a7f3d0;
+      background: #ecfdf5;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 12px;
+    }
+
     .payment-gateway-box {
       background: #fdf2f8;
       border: 1px solid #fbcfe8;
@@ -579,7 +579,7 @@
       padding: 10px;
       margin-top: 6px;
       font-size: 12px;
-    }
+      }
 
     .gateway-row {
       display: flex;
@@ -643,10 +643,32 @@
     }
 
     .status-pending { background: #fef3c7; color: #92400e; }
-    .status-confirmed { background: #dbeafe; color: #1e40af; }
+    .status-processing { background: #dbeafe; color: #1e40af; }
     .status-shipped { background: #e0e7ff; color: #3730a3; }
     .status-delivered { background: #d1fae5; color: #065f46; }
     .status-cancelled { background: #fee2e2; color: #991b1b; }
+
+    .tracker-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-top: 8px;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .tracker-step {
+      padding: 5px 3px;
+      border-radius: 6px;
+      background: #e5e7eb;
+      color: #4b5563;
+      font-weight: 700;
+    }
+
+    .tracker-step.active {
+      background: #059669;
+      color: #ffffff;
+    }
 
     .courier-box {
       background: #eff6ff;
@@ -668,7 +690,6 @@
     .cloud-on { background: #d1fae5; color: #065f46; }
     .cloud-off { background: #fef3c7; color: #92400e; }
 
-    /* Chat UI */
     .chat-box {
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -680,7 +701,7 @@
       flex-direction: column;
       gap: 8px;
       margin-bottom: 10px;
-      }
+    }
 
     .chat-msg {
       max-width: 82%;
@@ -709,7 +730,6 @@
       margin-top: 3px;
     }
 
-    /* Footer */
     .store-footer {
       background: #ffffff;
       border: 1px solid var(--border);
@@ -732,7 +752,6 @@
       }
     }
 
-    /* Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -773,7 +792,6 @@
       border: 1px solid var(--border);
     }
 
-    /* Bottom Navigation */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -783,12 +801,12 @@
       border-top: 1px solid var(--border);
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      padding: 6px 4px;
+      padding: 6px 2px;
       z-index: 45;
     }
 
     .bottom-nav.admin-unlocked {
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
     }
 
     .nav-btn {
@@ -818,7 +836,7 @@
       border-radius: 999px;
       position: absolute;
       top: -2px;
-      right: 18%;
+      right: 16%;
     }
 
     .toast {
@@ -843,7 +861,7 @@
     }
 
     @media print {
-      .contact-strip, .topbar, .bottom-nav, .live-alert-bar, .toast, #tab-home, #tab-cart, #tab-account, #tab-chat, #tab-admin, .store-footer {
+      .contact-strip, .topbar, .bottom-nav, .live-alert-bar, .toast, #tab-home, #tab-cart, #tab-account, #tab-chat, #tab-stock, #tab-admin, .store-footer {
         display: none !important;
       }
       body {
@@ -911,7 +929,6 @@
         </div>
       </div>
 
-      <!-- Offers & Campaign Section -->
       <div class="offers-box" id="offersSection">
         <div class="section-title" style="margin-bottom:4px;">
           <span>🎁 চলমান অফার ও বিশেষ সুবিধা</span>
@@ -938,7 +955,6 @@
 
       <div class="product-grid" id="productGrid"></div>
 
-      <!-- Return Policy Card on Home -->
       <div class="panel" style="margin-top:14px;">
         <div class="section-title">
           <span>রিটার্ন পলিসি</span>
@@ -953,21 +969,21 @@
       </div>
     </section>
 
-    <!-- DARAZ-STYLE CUSTOMER ACCOUNT & ADDRESS TAB -->
+    <!-- DARAZ-STYLE CUSTOMER ACCOUNT, ADDRESS & LIVE ORDER TRACKING TAB -->
     <section id="tab-account" style="display:none;">
       <div class="panel">
         <div class="section-title">
           <span>👤 কাস্টমার অ্যাকাউন্ট ও ঠিকানা</span>
-          <span id="accountBadge" class="cloud-pill cloud-off">অ্যাকাউন্ট লগআউট</span>
+          <span id="accountBadge" class="cloud-pill cloud-off">অ্যাকাউন্ট তথ্য দিন</span>
         </div>
 
         <form onsubmit="saveCustomerAccount(event)">
           <div class="form-group">
             <label>ক্রেতার পূর্ণ নাম *</label>
-            <input type="text" id="accName" class="form-control" required placeholder="যেমন: গোপাল চন্দ্র পাল" />
+            <input type="text" id="accName" class="form-control" required placeholder="আপনার পূর্ণ নাম" />
           </div>
           <div class="form-group">
-            <label>মোবাইল নম্বর (অ্যাকাউন্ট আইডি হিসেবে ব্যবহৃত) *</label>
+            <label>মোবাইল নম্বর *</label>
             <input type="tel" id="accPhone" class="form-control" required placeholder="01XXXXXXXXX" />
           </div>
           <div class="form-group">
@@ -994,17 +1010,16 @@
 
           <div class="form-group">
             <label>গ্রাম / মহল্লা / বাড়ি বা রোড নম্বর *</label>
-            <textarea id="accStreet" class="form-control" rows="2" required placeholder="যেমন: বাগেরহাট সদর, বাজার রোড, বাড়ি নং ১২"></textarea>
+            <textarea id="accStreet" class="form-control" rows="2" required placeholder="গ্রাম/রাস্তা/বাড়ি নম্বর লিখুন"></textarea>
           </div>
 
           <button type="submit" class="btn-primary" style="width:100%;">অ্যাকাউন্ট ও ঠিকানা সেভ করুন</button>
         </form>
       </div>
 
-      <!-- Customer Order History inside Account -->
       <div class="panel">
         <div class="section-title">
-          <span>📦 আমার অর্ডারসমূহ ও কুরিয়ার ট্র্যাকিং</span>
+          <span>📦 আমার অর্ডারসমূহ ও লাইভ ট্র্যাকিং</span>
           <button type="button" class="btn-secondary" onclick="syncFromCloud(true)">🔄 রিফ্রেশ</button>
         </div>
         <div class="flex-between no-print" style="margin-bottom:10px;">
@@ -1012,7 +1027,7 @@
           <select id="orderStatusFilter" class="var-select" style="max-width:160px;" onchange="renderOrders()">
             <option value="all">সব স্ট্যাটাস</option>
             <option value="pending">পেন্ডিং</option>
-            <option value="confirmed">কনফার্মড</option>
+            <option value="processing">অর্ডার প্রসেস</option>
             <option value="shipped">শিপড</option>
             <option value="delivered">ডেলিভার্ড</option>
             <option value="cancelled">ক্যান্সেলড</option>
@@ -1066,13 +1081,8 @@
         </div>
 
         <div class="form-group">
-          <label>কুরিয়ার সার্ভিস</label>
-          <select id="courierService" class="form-control">
-            <option value="Steadfast Courier">Steadfast Courier</option>
-            <option value="Pathao Courier">Pathao Courier</option>
-            <option value="RedX">RedX</option>
-            <option value="Sundarban Courier">Sundarban Courier Service</option>
-          </select>
+          <label>কুরিয়ার সার্ভিস নির্বাচন করুন</label>
+          <select id="courierService" class="form-control"></select>
         </div>
 
         <div id="cartBillBox" class="order-card" style="background:#fff;"></div>
@@ -1153,9 +1163,23 @@
           <button type="submit" id="placeOrderBtn" class="btn-primary" style="width:100%;">অর্ডার কনফার্ম করুন</button>
         </form>
       </div>
-       </section>
+    </section>
 
-    <!-- STORE MANAGER / ADMIN TAB (SEPARATE FOLDERS INSIDE SETTINGS) -->
+    <!-- SEPARATE STOCK MENU TAB -->
+    <section id="tab-stock" style="display:none;">
+      <div class="panel">
+        <div class="section-title">
+          <span>📦 স্টক ম্যানেজমেন্ট</span>
+          <button type="button" class="btn-secondary" onclick="syncFromCloud(true)">🔄 লাইভ সিঙ্ক</button>
+        </div>
+        <p style="font-size:12px; color:var(--muted); margin-bottom:10px;">
+          প্রতিটি পণ্যের ভেরিয়েশন অনুযায়ী দাম ও স্টক সরাসরি আপডেট করুন অথবা পণ্য ডিলিট করুন।
+        </p>
+        <div id="stockPageProductsList"></div>
+      </div>
+    </section>
+
+    <!-- STORE MANAGER / ADMIN TAB -->
     <section id="tab-admin" style="display:none;">
       <div class="panel flex-between">
         <div>
@@ -1168,25 +1192,37 @@
         </div>
       </div>
 
-      <!-- Folder Navigation inside Store Manager -->
+      <!-- Folder Tabs -->
       <div class="folder-tabs" id="adminFolderTabs">
-        <button type="button" class="folder-btn active" data-folder="folder-orders" onclick="switchAdminFolder('folder-orders')">📁 অর্ডার ও কুরিয়ার</button>
+        <button type="button" class="folder-btn active" data-folder="folder-orders" onclick="switchAdminFolder('folder-orders')">📁 নতুন অর্ডার ও প্রসেস</button>
         <button type="button" class="folder-btn" data-folder="folder-chat" onclick="switchAdminFolder('folder-chat')">📁 লাইভ চ্যাট</button>
-        <button type="button" class="folder-btn" data-folder="folder-products" onclick="switchAdminFolder('folder-products')">📁 পণ্য যুক্ত ও স্টক</button>
+        <button type="button" class="folder-btn" data-folder="folder-products" onclick="switchAdminFolder('folder-products')">📁 পণ্য যুক্ত করুন</button>
+        <button type="button" class="folder-btn" data-folder="folder-courier" onclick="switchAdminFolder('folder-courier')">📁 কুরিয়ার সার্ভিস</button>
         <button type="button" class="folder-btn" data-folder="folder-banner-offers" onclick="switchAdminFolder('folder-banner-offers')">📁 ব্যানার ও অফার</button>
         <button type="button" class="folder-btn" data-folder="folder-website" onclick="switchAdminFolder('folder-website')">📁 ওয়েবসাইট সেটিং</button>
       </div>
 
-      <!-- FOLDER 1: ORDERS & AUTO-COURIER -->
+      <!-- FOLDER 1: NEW ORDERS -> ORDER PROCESS -> DELIVERED BOX -->
       <div class="panel admin-folder" id="folder-orders">
         <div class="section-title">
-          <span>📁 অর্ডার ও অটো-কুরিয়ার ম্যানেজমেন্ট</span>
+          <span>📥 নতুন অর্ডার (কনফার্ম করলে অর্ডার প্রসেস ঘরে যাবে)</span>
           <span id="adminOrderCount" style="font-size:12px; color:var(--muted);"></span>
         </div>
-        <p style="font-size:12px; color:var(--muted); margin-bottom:8px;">
-          অর্ডার স্ট্যাটাস <strong>কনফার্মড (Confirmed)</strong> করলে অটোমেটিক কুরিয়ারে পণ্য বুকিং হয়ে ট্র্যাকিং কোড তৈরি হবে।
-        </p>
-        <div id="adminOrdersList"></div>
+        <div id="adminPendingOrdersList"></div>
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:14px 0;" />
+
+        <div class="section-title">
+          <span>⚙️ অর্ডার প্রসেস (কুরিয়ার বুকিং, শিপড ও ডেলিভারি প্রক্রিয়া)</span>
+        </div>
+        <div id="adminProcessOrdersList"></div>
+
+        <div class="delivered-box">
+          <div class="section-title" style="color:#065f46; margin-bottom:6px;">
+            <span>✅ Delivered বক্স (সম্পন্ন হওয়া অর্ডারসমূহ)</span>
+          </div>
+          <div id="adminDeliveredOrdersList"></div>
+        </div>
       </div>
 
       <!-- FOLDER 2: LIVE CHAT WITH CUSTOMERS -->
@@ -1211,13 +1247,13 @@
         </form>
       </div>
 
-      <!-- FOLDER 3: ADD PRODUCT & STOCK MANAGEMENT -->
+      <!-- FOLDER 3: ADD PRODUCT -->
       <div class="panel admin-folder" id="folder-products" style="display:none;">
         <div class="section-title"><span>📁 নতুন পণ্য যুক্ত করুন</span></div>
-        <form onsubmit="addNewProduct(event)" style="margin-bottom:16px;">
+        <form onsubmit="addNewProduct(event)">
           <div class="form-group">
             <label>পণ্যের নাম *</label>
-            <input type="text" id="newProdName" class="form-control" required placeholder="যেমন: চাউল" />
+            <input type="text" id="newProdName" class="form-control" required placeholder="যেমন: নারকেল" />
           </div>
           <div class="form-group">
             <label>ক্যাটাগরি *</label>
@@ -1239,7 +1275,7 @@
 
           <div class="form-group">
             <div class="flex-between">
-              <label style="margin:0;">ভেরিয়েশন টেবিল (১কেজি = দাম, ২কেজি = দাম)</label>
+              <label style="margin:0;">ভেরিয়েশন টেবিল (ভেরিয়েশন = দাম, স্টক)</label>
               <button type="button" class="btn-secondary" onclick="addVariationRow()">+ Add New</button>
             </div>
             <table class="var-table">
@@ -1275,15 +1311,35 @@
             <div class="media-thumbs" id="newMediaPreview"></div>
           </div>
 
-          <button type="submit" class="btn-primary" style="width:100%;">পণ্য প্রকাশ করুন</button>
+          <button type="submit" id="publishProductBtn" class="btn-primary" style="width:100%;">পণ্য প্রকাশ করুন</button>
         </form>
-
-        <hr style="border:none; border-top:1px solid var(--border); margin:12px 0;" />
-        <div class="section-title"><span>স্টকের পণ্যসমূহ (দাম ও স্টক সরাসরি এডিট)</span></div>
-        <div id="adminProductsList"></div>
       </div>
 
-      <!-- FOLDER 4: BANNER & OFFERS MANAGEMENT -->
+      <!-- FOLDER 4: COURIER SERVICE MANAGEMENT -->
+      <div class="panel admin-folder" id="folder-courier" style="display:none;">
+        <div class="section-title"><span>📁 কুরিয়ার সার্ভিস অ্যাড ও ম্যানেজমেন্ট</span></div>
+
+        <form onsubmit="addCourierService(event)" style="margin-bottom:14px;">
+          <div class="form-group">
+            <label>নতুন কুরিয়ার সার্ভিসের নাম *</label>
+            <input type="text" id="newCourierName" class="form-control" required placeholder="যেমন: SA Paribahan / Janani Express" />
+          </div>
+          <div class="form-group">
+            <label>ট্র্যাকিং কোড প্রিফিক্স (ঐচ্ছিক)</label>
+            <input type="text" id="newCourierPrefix" class="form-control" maxlength="5" placeholder="যেমন: SAP" />
+          </div>
+          <div class="form-group">
+            <label>কুরিয়ার নোট / পিকআপ তথ্য (ঐচ্ছিক)</label>
+            <input type="text" id="newCourierNote" class="form-control" placeholder="যেমন: প্রতিদিন দুপুর ২টায় পিকআপ" />
+          </div>
+          <button type="submit" class="btn-primary">কুরিয়ার সার্ভিস যুক্ত করুন</button>
+        </form>
+
+        <div class="section-title" style="font-size:14px;"><span>সক্রিয় কুরিয়ার সার্ভিসসমূহ</span></div>
+        <div id="adminCouriersList"></div>
+      </div>
+
+      <!-- FOLDER 5: BANNER & OFFERS MANAGEMENT -->
       <div class="panel admin-folder" id="folder-banner-offers" style="display:none;">
         <div class="section-title"><span>📁 ব্যানার ও অফার ম্যানেজমেন্ট</span></div>
 
@@ -1324,7 +1380,7 @@
         <div id="adminOffersList" style="margin-top:12px;"></div>
       </div>
 
-      <!-- FOLDER 5: WEBSITE SETTINGS, PIXEL & BACKUP -->
+      <!-- FOLDER 6: WEBSITE SETTINGS, PIXEL & BACKUP -->
       <div class="panel admin-folder" id="folder-website" style="display:none;">
         <div class="section-title"><span>📁 ওয়েবসাইট সেটিং, পিক্সেল ও ব্যাকআপ</span></div>
 
@@ -1350,12 +1406,7 @@
         </div>
         <div class="form-group">
           <label>ডিফল্ট অটো-কুরিয়ার সার্ভিস</label>
-          <select id="adminDefaultCourier" class="form-control">
-            <option value="Steadfast Courier">Steadfast Courier</option>
-            <option value="Pathao Courier">Pathao Courier</option>
-            <option value="RedX">RedX</option>
-            <option value="Sundarban Courier">Sundarban Courier Service</option>
-          </select>
+          <select id="adminDefaultCourier" class="form-control"></select>
         </div>
         <div class="form-group">
           <label>মূল থিম রঙ</label>
@@ -1416,6 +1467,11 @@
     </footer>
 
   </main>
+
+  <!-- Order Success Popup Modal -->
+  <div class="modal-backdrop" id="orderSuccessModal" onclick="if(event.target===this) closeOrderSuccessModal()">
+    <div class="modal-box" id="orderSuccessModalContent"></div>
+  </div>
 
   <!-- Product Detail & Customer Reviews Modal -->
   <div class="modal-backdrop" id="detailModal" onclick="if(event.target===this) closeModal()">
@@ -1483,6 +1539,10 @@
       <span>🛒</span>
       <span>কার্ট</span>
     </button>
+    <button class="nav-btn" id="nav-stock" style="display:none;" onclick="switchTab('stock')">
+      <span>📦</span>
+      <span>স্টক</span>
+    </button>
     <button class="nav-btn" id="nav-admin" style="display:none;" onclick="switchTab('admin')">
       <span>⚙️</span>
       <span>ম্যানেজার</span>
@@ -1490,16 +1550,14 @@
   </nav>
 
   <script>
-    // Firebase Realtime Database URL configured for cross-device live sync
     const FIREBASE_DB_URL = "https://bagerhat-fresh24-default-rtdb.asia-southeast1.firebasedatabase.app";
 
-    const STORAGE_KEY = "bagerhat_fresh24_store_v7";
+    const STORAGE_KEY = "bagerhat_fresh24_store_v8";
     const ADMIN_ACCESS_PIN = "2424";
     const ADMIN_UNLOCK_KEY = "bf24_admin_unlocked_session";
 
-    // Bangladesh 64 Districts & Upazilas/Thanas dataset
     const BD_DISTRICTS = {
-       "বাগেরহাট": ["বাগেরহাট সদর", "কচুয়া", "মোল্লাহাট", "ফকিরহাট", "রামপাল", "মোংলা", "মোরেলগঞ্জ", "শরণখোলা", "চিতলমারী"],
+      "বাগেরহাট": ["বাগেরহাট সদর", "কচুয়া", "মোল্লাহাট", "ফকিরহাট", "রামপাল", "মোংলা", "মোরেলগঞ্জ", "শরণখোলা", "চিতলমারী"],
       "খুলনা": ["খুলনা সদর", "সোনাডাঙ্গা", "খালিশপুর", "দৌলতপুর", "রূপসা", "তেরখাদা", "দিঘলিয়া", "ফুলতলা", "ডুমুরিয়া", "বটিয়াঘাটা", "পাইকগাছা", "কয়রা"],
       "যশোর": ["যশোর সদর", "ঝিকরগাছা", "শার্শা", "মনিরামপুর", "কেশবপুর", "অভয়নগর", "বাঘারপাড়া", "চৌগাছা"],
       "সাতক্ষীরা": ["সাতক্ষীরা সদর", "কলারোয়া", "তালা", "দেবহাটা", "কালিগঞ্জ", "আশাশুনি", "শ্যামনগর"],
@@ -1555,6 +1613,12 @@
         metaPixelId: "",
         customPixelId: ""
       },
+      couriers: [
+        { id: "c_sf", name: "Steadfast Courier", prefix: "SFD", note: "সারাদেশে দ্রুত হোম ডেলিভারি" },
+        { id: "c_pt", name: "Pathao Courier", prefix: "PTH", note: "লাইভ ট্র্যাকিং ও COD সুবিধা" },
+        { id: "c_rx", name: "RedX", prefix: "RDX", note: "নির্ভরযোগ্য পার্সেল ডেলিভারি" },
+        { id: "c_sb", name: "Sundarban Courier Service", prefix: "SDB", note: "শাখা ও কন্ডিশন ডেলিভারি" }
+      ],
       offers: [
         {
           id: "off_1",
@@ -1631,7 +1695,7 @@
 
     let state = loadState();
     let tempUploadedImages = [];
-    let tempUploadedVideo = "";
+    let tempUploadedVideoUrl = "";
     let knownOrderIds = new Set((state.orders || []).map((o) => o.id));
     let knownChatIds = new Set((state.chatMessages || []).map((m) => m.id));
 
@@ -1681,9 +1745,12 @@
     async function syncProductsAndStoreToCloud() {
       const base = getCleanDbUrl();
       if (!base) return;
-      await cloudPut("storeConfig", state.store);
-      await cloudPut("offers", state.offers);
-      await cloudPut("products", state.products);
+      await Promise.all([
+        cloudPut("storeConfig", state.store),
+        cloudPut("offers", state.offers),
+        cloudPut("couriers", state.couriers),
+        cloudPut("products", state.products)
+      ]);
     }
 
     async function syncOrderToCloud(order) {
@@ -1726,9 +1793,10 @@
         return;
       }
 
-      const [remoteStore, remoteOffers, remoteProducts, remoteOrdersObj, remoteChatsObj] = await Promise.all([
+      const [remoteStore, remoteOffers, remoteCouriers, remoteProducts, remoteOrdersObj, remoteChatsObj] = await Promise.all([
         cloudGet("storeConfig"),
         cloudGet("offers"),
+        cloudGet("couriers"),
         cloudGet("products"),
         cloudGet("orders"),
         cloudGet("chats")
@@ -1748,6 +1816,13 @@
         renderOffers();
       } else if (remoteOffers === null) {
         await cloudPut("offers", state.offers);
+      }
+
+      if (Array.isArray(remoteCouriers) && remoteCouriers.length > 0) {
+        state.couriers = remoteCouriers;
+        renderCourierDropdowns();
+      } else if (remoteCouriers === null) {
+        await cloudPut("couriers", state.couriers);
       }
 
       if (Array.isArray(remoteProducts) && remoteProducts.length > 0) {
@@ -1791,12 +1866,95 @@
       renderCustomerChat();
       if (isAdminUnlocked()) {
         renderAdmin();
+        renderStockPage();
         populateAdminChatCustomers();
         renderAdminChat();
       }
-      if (manual) showToast("সর্বশেষ অর্ডার, পণ্য ও চ্যাট সিঙ্ক হয়েছে!");
+      if (manual) showToast("সর্বশেষ অর্ডার, স্টক, পণ্য ও চ্যাট সিঙ্ক হয়েছে!");
     }
 
+    // Courier Service Management
+    function renderCourierDropdowns() {
+      const list = state.couriers && state.couriers.length ? state.couriers : DEFAULT_DATA.couriers;
+      const checkoutSel = document.getElementById("courierService");
+      const defaultSel = document.getElementById("adminDefaultCourier");
+
+      if (checkoutSel) {
+        const prev = checkoutSel.value || state.store.defaultCourier;
+        checkoutSel.innerHTML = list
+          .map((c) => `<option value="${escapeHtml(c.name)}" ${c.name === prev ? "selected" : ""}>${escapeHtml(c.name)}</option>`)
+          .join("");
+      }
+
+      if (defaultSel) {
+        const prev = defaultSel.value || state.store.defaultCourier;
+        defaultSel.innerHTML = list
+          .map((c) => `<option value="${escapeHtml(c.name)}" ${c.name === prev ? "selected" : ""}>${escapeHtml(c.name)}</option>`)
+          .join("");
+      }
+    }
+
+    async function addCourierService(e) {
+      e.preventDefault();
+      const name = document.getElementById("newCourierName").value.trim();
+      const rawPrefix = (document.getElementById("newCourierPrefix").value || "").trim().toUpperCase();
+      const prefix = rawPrefix || name.replace(/[^A-Za-z]/g, "").slice(0, 3).toUpperCase() || "CR";
+      const note = (document.getElementById("newCourierNote").value || "").trim();
+
+      if (!name) return;
+      if (!Array.isArray(state.couriers)) state.couriers = [];
+
+      state.couriers.push({
+        id: "c_" + Date.now(),
+        name,
+        prefix,
+        note: note || "কুরিয়ার সার্ভিস সক্রিয়"
+      });
+
+      e.target.reset();
+      saveState();
+      renderCourierDropdowns();
+      renderAdminCouriers();
+      await syncProductsAndStoreToCloud();
+      showToast(`${name} কুরিয়ার সার্ভিস যুক্ত হয়েছে!`);
+    }
+
+    async function deleteCourierService(courierId) {
+      if ((state.couriers || []).length <= 1) {
+        showToast("অন্তত ১টি কুরিয়ার সার্ভিস থাকা আবশ্যক।");
+        return;
+      }
+      state.couriers = state.couriers.filter((c) => c.id !== courierId);
+      if (!state.couriers.some((c) => c.name === state.store.defaultCourier)) {
+        state.store.defaultCourier = state.couriers[0].name;
+      }
+      saveState();
+      renderCourierDropdowns();
+      renderAdminCouriers();
+      await syncProductsAndStoreToCloud();
+      showToast("কুরিয়ার সার্ভিস মুছে ফেলা হয়েছে।");
+    }
+
+    function renderAdminCouriers() {
+      const box = document.getElementById("adminCouriersList");
+      if (!box) return;
+      const list = state.couriers || [];
+      box.innerHTML = list
+        .map(
+          (c) => `
+          <div class="cart-item flex-between">
+            <div>
+              <div style="font-size:13px; font-weight:700;">🚚 ${escapeHtml(c.name)} <span class="cloud-pill cloud-on">${escapeHtml(c.prefix)}</span></div>
+              <div style="font-size:12px; color:var(--muted);">${escapeHtml(c.note || "")}</div>
+            </div>
+            <button type="button" class="btn-danger" onclick="deleteCourierService('${c.id}')">মুছুন</button>
+          </div>
+        `
+        )
+        .join("");
+    }
+
+    // District & Thana functions
     function initDistrictDropdowns() {
       const uniqueDistricts = [...new Set(ALL_64_DISTRICTS)];
       ["accDistrict", "checkoutDistrict"].forEach((selectId) => {
@@ -1867,7 +2025,6 @@
       }
       if (document.getElementById("accStreet")) document.getElementById("accStreet").value = acc.street || "";
 
-      // Auto-fill checkout fields if customer has account saved
       if (acc.name && document.getElementById("custName") && !document.getElementById("custName").value) {
         document.getElementById("custName").value = acc.name;
       }
@@ -1883,7 +2040,6 @@
         document.getElementById("custAddress").value = acc.street;
       }
 
-      // Auto-fill chat sender info
       if (acc.name && document.getElementById("chatSenderName") && !document.getElementById("chatSenderName").value) {
         document.getElementById("chatSenderName").value = acc.name;
       }
@@ -1904,7 +2060,6 @@
       };
       saveState();
 
-      // Sync to checkout & chat inputs immediately
       document.getElementById("custName").value = state.customerAccount.name;
       document.getElementById("custPhone").value = state.customerAccount.phone;
       document.getElementById("checkoutDistrict").value = state.customerAccount.district;
@@ -1920,7 +2075,7 @@
       showToast("কাস্টমার অ্যাকাউন্ট ও ঠিকানা সংরক্ষিত হয়েছে!");
     }
 
-    // Live Chat Functions
+    // Chat functions
     function updateChatBadge() {
       const badge = document.getElementById("chatBadge");
       if (!badge) return;
@@ -1942,7 +2097,7 @@
         senderName,
         customerPhone: senderPhone,
         text
-      };
+        };
 
       knownChatIds.add(msg.id);
       state.chatMessages.push(msg);
@@ -2073,7 +2228,6 @@
       showToast("রিপ্লাই পাঠানো হয়েছে!");
     }
 
-    // Offers & Banner functions
     function renderOffers() {
       const container = document.getElementById("offersListContainer");
       const adminContainer = document.getElementById("adminOffersList");
@@ -2157,6 +2311,9 @@
         populateAdminChatCustomers();
         renderAdminChat();
       }
+      if (folderId === "folder-courier") {
+        renderAdminCouriers();
+      }
       if (folderId === "folder-banner-offers") {
         renderOffers();
       }
@@ -2170,14 +2327,18 @@
       const unlocked = isAdminUnlocked();
       const nav = document.getElementById("bottomNav");
       const adminNavBtn = document.getElementById("nav-admin");
+      const stockNavBtn = document.getElementById("nav-stock");
       const adminSec = document.getElementById("tab-admin");
+      const stockSec = document.getElementById("tab-stock");
       const bellBtn = document.getElementById("notifBellBtn");
 
       if (nav) nav.classList.toggle("admin-unlocked", unlocked);
       if (adminNavBtn) adminNavBtn.style.display = unlocked ? "flex" : "none";
+      if (stockNavBtn) stockNavBtn.style.display = unlocked ? "flex" : "none";
       if (bellBtn) bellBtn.style.display = unlocked ? "inline-block" : "none";
-      if (adminSec && !unlocked) {
-        adminSec.style.display = "none";
+      if (!unlocked) {
+        if (adminSec) adminSec.style.display = "none";
+        if (stockSec) stockSec.style.display = "none";
         if (document.getElementById("liveAlertBar")) {
           document.getElementById("liveAlertBar").classList.remove("show");
         }
@@ -2216,6 +2377,7 @@
           ...structuredClone(DEFAULT_DATA),
           ...parsed,
           store: { ...DEFAULT_DATA.store, ...(parsed.store || {}) },
+          couriers: Array.isArray(parsed.couriers) && parsed.couriers.length ? parsed.couriers : structuredClone(DEFAULT_DATA.couriers),
           offers: Array.isArray(parsed.offers) ? parsed.offers : structuredClone(DEFAULT_DATA.offers),
           customerAccount: { ...DEFAULT_DATA.customerAccount, ...(parsed.customerAccount || {}) },
           chatMessages: Array.isArray(parsed.chatMessages) ? parsed.chatMessages : [],
@@ -2232,7 +2394,11 @@
     }
 
     function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        showToast("স্টোরেজ সীমা পূর্ণ—ছবির সাইজ কম রাখুন।");
+      }
     }
 
     function showToast(msg) {
@@ -2363,14 +2529,23 @@
         container.innerHTML = `<p style="font-size:13px; color:var(--muted);">এখনো কোনো নোটিফিকেশন নেই।</p>`;
       } else {
         container.innerHTML = state.notifications
-          .map(
-            (n) => `
-            <div class="notif-item">
-              <div style="font-size:12px; font-weight:600; margin-bottom:4px;">${escapeHtml(n.text)}</div>
-              <div style="font-size:11px; color:var(--muted);">${escapeHtml(n.time)}</div>
-            </div>
-          `
-          )
+          .map((n) => {
+            const ord = state.orders.find((o) => o.id === n.orderId);
+            const canConfirm = ord && ord.status === "pending";
+            return `
+              <div class="notif-item">
+                <div style="font-size:12px; font-weight:600; margin-bottom:6px;">${escapeHtml(n.text)}</div>
+                <div class="flex-between">
+                  <span style="font-size:11px; color:var(--muted);">${escapeHtml(n.time)}</span>
+                  ${
+                    canConfirm
+                      ? `<button type="button" class="btn-primary" style="padding:5px 10px; font-size:11px;" onclick="closeNotifModal(); switchTab('admin'); switchAdminFolder('folder-orders'); updateOrderStatus('${ord.id}', 'processing');">অর্ডার কনফার্ম</button>`
+                      : ""
+                  }
+                </div>
+              </div>
+            `;
+          })
           .join("");
       }
       document.getElementById("notifModal").classList.add("show");
@@ -2386,6 +2561,33 @@
 
     function closeReturnPolicyModal() {
       document.getElementById("returnPolicyModal").classList.remove("show");
+    }
+
+    function openOrderSuccessModal(order) {
+      document.getElementById("orderSuccessModalContent").innerHTML = `
+        <div class="flex-between" style="margin-bottom:10px;">
+          <h3 style="color:var(--success);">✅ অর্ডার সম্পন্ন হয়েছে!</h3>
+          <button class="btn-danger" onclick="closeOrderSuccessModal()">বন্ধ</button>
+        </div>
+        <div style="font-size:13px; line-height:1.65;">
+          <p style="margin-bottom:8px;">ধন্যবাদ <strong>${escapeHtml(order.customerName)}</strong>! আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে।</p>
+          <div class="order-card" style="background:#f9fafb;">
+            <div><strong>অর্ডার আইডি:</strong> ${escapeHtml(order.id)}</div>
+            <div><strong>মোট পরিমাণ:</strong> ৳${order.total} (${escapeHtml(order.paymentMethod)})</div>
+            <div><strong>কুরিয়ার:</strong> ${escapeHtml(order.courierService)}</div>
+            <div><strong>ঠিকানা:</strong> ${escapeHtml(order.customerAddress)}</div>
+          </div>
+          <div style="display:flex; gap:8px; margin-top:12px;">
+            <button type="button" class="btn-primary" style="flex:1;" onclick="closeOrderSuccessModal(); switchTab('account');">লাইভ ট্র্যাকিং দেখুন</button>
+            <button type="button" class="btn-secondary" onclick="closeOrderSuccessModal();">ঠিক আছে</button>
+          </div>
+        </div>
+      `;
+      document.getElementById("orderSuccessModal").classList.add("show");
+    }
+
+    function closeOrderSuccessModal() {
+      document.getElementById("orderSuccessModal").classList.remove("show");
     }
 
     function applyBranding() {
@@ -2443,6 +2645,8 @@
         logoBox.textContent = "BF";
       }
 
+      renderCourierDropdowns();
+
       if (document.getElementById("adminMetaPixelId")) document.getElementById("adminMetaPixelId").value = metaPixelId || "";
       if (document.getElementById("adminCustomPixelId")) document.getElementById("adminCustomPixelId").value = customPixelId || "";
       if (document.getElementById("adminStoreName")) document.getElementById("adminStoreName").value = name;
@@ -2462,15 +2666,15 @@
     }
 
     function switchTab(tabName) {
-      if (tabName === "admin" && !isAdminUnlocked()) {
+      if ((tabName === "admin" || tabName === "stock") && !isAdminUnlocked()) {
         promptAdminUnlock();
         return;
       }
 
-      ["home", "account", "chat", "cart", "admin"].forEach((t) => {
+      ["home", "account", "chat", "cart", "stock", "admin"].forEach((t) => {
         const sec = document.getElementById(`tab-${t}`);
         const navBtn = document.getElementById(`nav-${t}`);
-        if (t === "admin" && !isAdminUnlocked()) {
+        if ((t === "admin" || t === "stock") && !isAdminUnlocked()) {
           if (sec) sec.style.display = "none";
           return;
         }
@@ -2480,6 +2684,7 @@
 
       if (tabName === "cart") {
         hydrateCustomerAccountUI();
+        renderCourierDropdowns();
         renderCart();
       }
       if (tabName === "account") {
@@ -2492,9 +2697,14 @@
         syncChatFromCloud(false);
         renderCustomerChat();
       }
+      if (tabName === "stock") {
+        syncFromCloud(false);
+        renderStockPage();
+      }
       if (tabName === "admin") {
         syncFromCloud(false);
         renderAdmin();
+        renderAdminCouriers();
         populateAdminChatCustomers();
         renderAdminChat();
       }
@@ -2784,7 +2994,7 @@
           variationLabel: variation.label,
           unitPrice: variation.price,
           qty: 1
-        });
+          });
       }
 
       saveState();
@@ -2959,7 +3169,6 @@
       const custStreet = document.getElementById("custAddress").value.trim();
       const fullAddress = `${custStreet}, থানা: ${custThana}, জেলা: ${custDistrict}`;
 
-      // Save/update customer account automatically
       state.customerAccount = {
         ...state.customerAccount,
         name: custName,
@@ -3016,20 +3225,15 @@
       updateCartBadge();
       hydrateCustomerAccountUI();
       renderProducts();
-      pushOrderNotification(order, "নতুন অর্ডার এসেছে");
-      showToast(`অর্ডার ${order.id} সম্পন্ন হয়েছে!`);
-      switchTab("account");
+      renderOrders();
+      pushOrderNotification(order, "নতুন অনলাইন অর্ডার এসেছে");
+      openOrderSuccessModal(order);
     }
 
     function bookCourierAutomatically(order) {
       if (order.courierBooking) return;
-      const prefixMap = {
-        "Steadfast Courier": "SFD",
-        "Pathao Courier": "PTH",
-        "RedX": "RDX",
-        "Sundarban Courier Service": "SDB"
-      };
-      const prefix = prefixMap[order.courierService] || "CR";
+      const matched = (state.couriers || []).find((c) => c.name === order.courierService);
+      const prefix = matched?.prefix || "CR";
       const trackingCode = `${prefix}-${Math.floor(10000000 + Math.random() * 90000000)}`;
       const codAmount = order.paymentMethod === "Cash on Delivery" ? order.total : 0;
 
@@ -3065,7 +3269,7 @@
           if (!variation || variation.stock < item.qty) {
             showToast("পুনরায় চালু করার মতো পর্যাপ্ত স্টক নেই।");
             return;
-            }
+          }
         }
         for (const item of order.items) {
           const product = state.products.find((p) => p.id === item.productId);
@@ -3074,9 +3278,14 @@
         }
       }
 
-      if (nextStatus === "confirmed" || nextStatus === "shipped") {
+      if (nextStatus === "processing" || nextStatus === "shipped" || nextStatus === "delivered") {
         bookCourierAutomatically(order);
-        showToast(`অর্ডার কনফার্মড! ${order.courierBooking.courier}-এ বুকিং হয়েছে (${order.courierBooking.trackingCode})`);
+      }
+
+      if (nextStatus === "processing") {
+        showToast(`অর্ডার কনফার্মড! ${order.id} এখন অর্ডার প্রসেস ঘরে রয়েছে।`);
+      } else if (nextStatus === "delivered") {
+        showToast(`অর্ডার ${order.id} Delivered বক্সে সংরক্ষিত হয়েছে!`);
       }
 
       order.status = nextStatus;
@@ -3085,6 +3294,7 @@
       await syncProductsAndStoreToCloud();
 
       renderProducts();
+      renderStockPage();
       renderOrders();
       renderAdmin();
     }
@@ -3092,12 +3302,27 @@
     function statusLabelBn(status) {
       const map = {
         pending: "পেন্ডিং",
-        confirmed: "কনফার্মড",
+        processing: "অর্ডার প্রসেস",
         shipped: "শিপড",
         delivered: "ডেলিভার্ড",
         cancelled: "ক্যান্সেলড"
       };
       return map[status] || status;
+    }
+
+    function renderLiveTracker(status) {
+      if (status === "cancelled") {
+        return `<div class="status-badge status-cancelled" style="margin-top:6px; display:inline-block;">অর্ডার বাতিল করা হয়েছে</div>`;
+      }
+      const rank = { pending: 1, processing: 2, shipped: 3, delivered: 4 }[status] || 1;
+      return `
+        <div class="tracker-bar">
+          <div class="tracker-step ${rank >= 1 ? "active" : ""}">১. পেন্ডিং</div>
+          <div class="tracker-step ${rank >= 2 ? "active" : ""}">২. প্রসেস</div>
+          <div class="tracker-step ${rank >= 3 ? "active" : ""}">৩. শিপড</div>
+          <div class="tracker-step ${rank >= 4 ? "active" : ""}">৪. ডেলিভার্ড</div>
+        </div>
+      `;
     }
 
     function renderCourierInfo(order) {
@@ -3215,16 +3440,17 @@
             <div style="font-size:12px; margin-bottom:4px;">
               ${(o.items || []).map((i) => `${escapeHtml(i.name)} (${escapeHtml(i.variationLabel)}) × ${i.qty}`).join(", ")}
             </div>
+            ${renderLiveTracker(o.status)}
             ${renderCourierInfo(o)}
             <div class="flex-between" style="font-size:13px; margin-top:8px;">
               <strong>মোট: ৳${o.total}</strong>
               <div style="display:flex; gap:6px;">
                 <button type="button" class="btn-secondary" onclick="openInvoiceModal('${o.id}')">ইনভয়েস</button>
                 ${
-                  o.status !== "cancelled" && o.status !== "delivered"
+                  o.status === "pending"
                     ? `<button type="button" class="btn-danger" onclick="updateOrderStatus('${o.id}', 'cancelled')">অর্ডার ক্যান্সেল</button>`
                     : ""
-                }
+                  }
               </div>
             </div>
           </div>
@@ -3236,15 +3462,13 @@
     function handleBannerUpload(e) {
       const file = e.target.files[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = async () => {
-        state.store.bannerUrl = reader.result;
+      compressImageFile(file, 960, 0.72, async (dataUrl) => {
+        state.store.bannerUrl = dataUrl;
         saveState();
         applyBranding();
         await syncProductsAndStoreToCloud();
         showToast("ওয়েবসাইটের ব্যানার আপডেট হয়েছে!");
-      };
-      reader.readAsDataURL(file);
+      });
     }
 
     async function clearBannerImage() {
@@ -3258,15 +3482,13 @@
     function handleLogoUpload(e) {
       const file = e.target.files[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = async () => {
-        state.store.logoUrl = reader.result;
+      compressImageFile(file, 240, 0.78, async (dataUrl) => {
+        state.store.logoUrl = dataUrl;
         saveState();
         applyBranding();
         await syncProductsAndStoreToCloud();
         showToast("লোগো আপডেট হয়েছে।");
-      };
-      reader.readAsDataURL(file);
+      });
     }
 
     async function saveStoreSettings() {
@@ -3306,41 +3528,61 @@
       btn.closest("tr").remove();
     }
 
+    function compressImageFile(file, maxWidth, quality, callback) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+          const scale = Math.min(1, maxWidth / (img.width || maxWidth));
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.max(1, Math.round(img.width * scale));
+          canvas.height = Math.max(1, Math.round(img.height * scale));
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          callback(canvas.toDataURL("image/jpeg", quality));
+        };
+        img.onerror = () => callback(ev.target.result);
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
     function previewNewMedia() {
       const imgFiles = Array.from(document.getElementById("newProdImages").files || []).slice(0, 5);
       const vidFile = (document.getElementById("newProdVideo").files || [])[0];
       tempUploadedImages = [];
-      tempUploadedVideo = "";
+      if (tempUploadedVideoUrl) {
+        URL.revokeObjectURL(tempUploadedVideoUrl);
+        tempUploadedVideoUrl = "";
+      }
 
       const previewBox = document.getElementById("newMediaPreview");
       previewBox.innerHTML = "";
 
       imgFiles.forEach((file) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          tempUploadedImages.push(reader.result);
+        compressImageFile(file, 720, 0.72, (compressedDataUrl) => {
+          tempUploadedImages.push(compressedDataUrl);
           const img = document.createElement("img");
-          img.src = reader.result;
+          img.src = compressedDataUrl;
           previewBox.appendChild(img);
-        };
-        reader.readAsDataURL(file);
+        });
       });
 
       if (vidFile) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          tempUploadedVideo = reader.result;
-          const vid = document.createElement("video");
-          vid.src = reader.result;
-          vid.controls = true;
-          previewBox.appendChild(vid);
-        };
-        reader.readAsDataURL(vidFile);
+        tempUploadedVideoUrl = URL.createObjectURL(vidFile);
+        const vid = document.createElement("video");
+        vid.src = tempUploadedVideoUrl;
+        vid.controls = true;
+        previewBox.appendChild(vid);
       }
     }
 
     async function addNewProduct(e) {
       e.preventDefault();
+      const publishBtn = document.getElementById("publishProductBtn");
+      publishBtn.disabled = true;
+      publishBtn.textContent = "পণ্য প্রকাশ হচ্ছে...";
+
       const varRows = Array.from(document.querySelectorAll("#newVarTableBody tr"));
       const variations = varRows
         .map((row, i) => ({
@@ -3352,6 +3594,8 @@
         .filter((v) => v.label && v.price > 0);
 
       if (!variations.length) {
+        publishBtn.disabled = false;
+        publishBtn.textContent = "পণ্য প্রকাশ করুন";
         showToast("কমপক্ষে একটি সঠিক ভেরিয়েশন ও দাম দিন।");
         return;
       }
@@ -3365,7 +3609,7 @@
         images: tempUploadedImages.length
           ? [...tempUploadedImages]
           : ["https://via.placeholder.com/300x200?text=New+Product"],
-        video: tempUploadedVideo || "",
+        video: tempUploadedVideoUrl || "",
         variations,
         reviews: []
       };
@@ -3376,7 +3620,7 @@
 
       e.target.reset();
       tempUploadedImages = [];
-      tempUploadedVideo = "";
+      tempUploadedVideoUrl = "";
       document.getElementById("newMediaPreview").innerHTML = "";
       document.getElementById("newVarTableBody").innerHTML = `
         <tr>
@@ -3393,10 +3637,14 @@
         </tr>
       `;
 
+      publishBtn.disabled = false;
+      publishBtn.textContent = "পণ্য প্রকাশ করুন";
+
       renderCategories();
       renderProducts();
-      renderAdmin();
-      showToast("নতুন পণ্য স্টোরে যুক্ত ও ক্লাউডে সিঙ্ক হয়েছে!");
+      renderStockPage();
+      showToast("নতুন পণ্য প্রকাশিত ও সিঙ্ক হয়েছে!");
+      switchTab("home");
     }
 
     async function updateVariationQuick(productId, varId) {
@@ -3416,8 +3664,8 @@
         saveState();
         await syncProductsAndStoreToCloud();
         renderProducts();
-        renderAdmin();
-        showToast(`${prod.name} (${v.label}) আপডেট হয়েছে!`);
+        renderStockPage();
+        showToast(`${prod.name} (${v.label}) স্টক ও দাম আপডেট হয়েছে!`);
       }
     }
 
@@ -3428,8 +3676,43 @@
       await syncProductsAndStoreToCloud();
       renderCategories();
       renderProducts();
-      renderAdmin();
+      renderStockPage();
       showToast("পণ্য মুছে ফেলা হয়েছে।");
+    }
+
+    function renderStockPage() {
+      const prodContainer = document.getElementById("stockPageProductsList");
+      if (!prodContainer) return;
+
+      prodContainer.innerHTML = state.products
+        .map((p) => {
+          const varEditors = p.variations
+            .map(
+              (v) => `
+              <div class="flex-between" style="margin-top:6px; gap:6px;">
+                <span style="font-size:12px; min-width:85px;"><strong>${escapeHtml(v.label)}</strong></span>
+                <input type="number" id="edit-price-${v.id}" class="form-control" value="${v.price}" min="1" style="max-width:85px; padding:5px 7px; font-size:12px;" />
+                <input type="number" id="edit-stock-${v.id}" class="form-control" value="${v.stock}" min="0" style="max-width:75px; padding:5px 7px; font-size:12px;" />
+                <button type="button" class="btn-secondary" onclick="updateVariationQuick('${p.id}', '${v.id}')">আপডেট</button>
+              </div>
+            `
+            )
+            .join("");
+
+          return `
+            <div class="cart-item">
+              <div class="flex-between">
+                <div>
+                  <div style="font-weight:700; font-size:13px;">${escapeHtml(p.name)}</div>
+                  <div style="font-size:11px; color:var(--muted);">${escapeHtml(p.category)} • রিভিউ: ${(p.reviews || []).length}</div>
+                </div>
+                <button type="button" class="btn-danger" onclick="deleteProduct('${p.id}')">ডিলিট</button>
+              </div>
+              ${varEditors}
+            </div>
+          `;
+        })
+        .join("");
     }
 
     function exportBackupJson() {
@@ -3491,6 +3774,7 @@
             renderOffers();
             renderCategories();
             renderProducts();
+            renderStockPage();
             updateCartBadge();
             updateNotifBadge();
             renderAdmin();
@@ -3503,75 +3787,72 @@
       reader.readAsText(file);
     }
 
+    function renderAdminOrderCard(o, mode) {
+      let actionButtons = "";
+      if (mode === "pending") {
+        actionButtons = `
+          <button type="button" class="btn-primary" onclick="updateOrderStatus('${o.id}', 'processing')">অর্ডার কনফার্ম</button>
+          <button type="button" class="btn-danger" onclick="updateOrderStatus('${o.id}', 'cancelled')">বাতিল</button>
+        `;
+      } else if (mode === "processing") {
+        actionButtons = `
+          <select class="var-select" style="max-width:155px;" onchange="updateOrderStatus('${o.id}', this.value)">
+            <option value="processing" ${o.status === "processing" ? "selected" : ""}>অর্ডার প্রসেস</option>
+            <option value="shipped" ${o.status === "shipped" ? "selected" : ""}>শিপড (কুরিয়ারে)</option>
+            <option value="delivered" ${o.status === "delivered" ? "selected" : ""}>Delivered (সম্পন্ন)</option>
+            <option value="cancelled" ${o.status === "cancelled" ? "selected" : ""}>ক্যান্সেলড</option>
+          </select>
+        `;
+      }
+
+      return `
+        <div class="order-card">
+          <div class="flex-between">
+            <div>
+              <strong>${o.id}</strong> — ${escapeHtml(o.customerName)} (${escapeHtml(o.customerPhone)})
+              <span class="status-badge status-${o.status}" style="margin-left:6px;">${statusLabelBn(o.status)}</span>
+              <div style="font-size:11px; color:var(--muted);">ঠিকানা: ${escapeHtml(o.customerAddress)} • মোট: ৳${o.total} • ${escapeHtml(o.paymentMethod)}${o.paymentTrxId ? ` (${escapeHtml(o.paymentTrxId)})` : ""}</div>
+              <div style="font-size:11px; margin-top:2px;">পণ্য: ${(o.items || []).map((i) => `${escapeHtml(i.name)} (${escapeHtml(i.variationLabel)}) × ${i.qty}`).join(", ")}</div>
+            </div>
+            <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+              ${actionButtons}
+            </div>
+          </div>
+          ${renderCourierInfo(o)}
+          <div style="margin-top:6px;">
+            <button type="button" class="btn-secondary" onclick="openInvoiceModal('${o.id}')">ইনভয়েস দেখুন</button>
+          </div>
+        </div>
+      `;
+    }
+
     function renderAdmin() {
       if (!isAdminUnlocked()) return;
 
       document.getElementById("adminOrderCount").textContent = `মোট ${state.orders.length}টি অর্ডার`;
 
-      const ordContainer = document.getElementById("adminOrdersList");
-      if (!state.orders.length) {
-        ordContainer.innerHTML = `<p style="font-size:12px; color:var(--muted);">এখনো কোনো অর্ডার নেই।</p>`;
-      } else {
-        ordContainer.innerHTML = state.orders
-          .map(
-            (o) => `
-            <div class="order-card">
-              <div class="flex-between">
-                <div>
-                  <strong>${o.id}</strong> — ${escapeHtml(o.customerName)} (${escapeHtml(o.customerPhone)})
-                  <div style="font-size:11px; color:var(--muted);">ঠিকানা: ${escapeHtml(o.customerAddress)} • মোট: ৳${o.total} • ${escapeHtml(o.paymentMethod)}${o.paymentTrxId ? ` (${escapeHtml(o.paymentTrxId)})` : ""}</div>
-                  <div style="font-size:11px; margin-top:2px;">পণ্য: ${(o.items || []).map((i) => `${escapeHtml(i.name)} (${escapeHtml(i.variationLabel)}) × ${i.qty}`).join(", ")}</div>
-                </div>
-                <select class="var-select" style="max-width:140px;" onchange="updateOrderStatus('${o.id}', this.value)">
-                  <option value="pending" ${o.status === "pending" ? "selected" : ""}>পেন্ডিং</option>
-                  <option value="confirmed" ${o.status === "confirmed" ? "selected" : ""}>কনফার্মড (অটো কুরিয়ার)</option>
-                  <option value="shipped" ${o.status === "shipped" ? "selected" : ""}>শিপড</option>
-                  <option value="delivered" ${o.status === "delivered" ? "selected" : ""}>ডেলিভার্ড</option>
-                  <option value="cancelled" ${o.status === "cancelled" ? "selected" : ""}>ক্যান্সেলড</option>
-                </select>
-              </div>
-              ${renderCourierInfo(o)}
-              <div style="margin-top:6px;">
-                <button type="button" class="btn-secondary" onclick="openInvoiceModal('${o.id}')">ইনভয়েস দেখুন</button>
-              </div>
-            </div>
-          `
-          )
-          .join("");
-      }
+      const pendingOrders = state.orders.filter((o) => o.status === "pending");
+      const processingOrders = state.orders.filter((o) => o.status === "processing" || o.status === "shipped");
+      const deliveredOrders = state.orders.filter((o) => o.status === "delivered");
 
-      const prodContainer = document.getElementById("adminProductsList");
-      prodContainer.innerHTML = state.products
-        .map((p) => {
-          const varEditors = p.variations
-            .map(
-              (v) => `
-              <div class="flex-between" style="margin-top:6px; gap:6px;">
-                <span style="font-size:12px; min-width:85px;"><strong>${escapeHtml(v.label)}</strong></span>
-                <input type="number" id="edit-price-${v.id}" class="form-control" value="${v.price}" min="1" style="max-width:85px; padding:5px 7px; font-size:12px;" />
-                <input type="number" id="edit-stock-${v.id}" class="form-control" value="${v.stock}" min="0" style="max-width:75px; padding:5px 7px; font-size:12px;" />
-                <button type="button" class="btn-secondary" onclick="updateVariationQuick('${p.id}', '${v.id}')">আপডেট</button>
-              </div>
-            `
-            )
-            .join("");
+      const pendingBox = document.getElementById("adminPendingOrdersList");
+      const processBox = document.getElementById("adminProcessOrdersList");
+      const deliveredBox = document.getElementById("adminDeliveredOrdersList");
 
-          return `
-            <div class="cart-item">
-              <div class="flex-between">
-                <div>
-                  <div style="font-weight:700; font-size:13px;">${escapeHtml(p.name)}</div>
-                  <div style="font-size:11px; color:var(--muted);">${escapeHtml(p.category)} • রিভিউ: ${(p.reviews || []).length}</div>
-                </div>
-                <button type="button" class="btn-danger" onclick="deleteProduct('${p.id}')">ডিলিট</button>
-              </div>
-              ${varEditors}
-            </div>
-          `;
-        })
-        .join("");
+      pendingBox.innerHTML = pendingOrders.length
+        ? pendingOrders.map((o) => renderAdminOrderCard(o, "pending")).join("")
+        : `<p style="font-size:12px; color:var(--muted);">নতুন পেন্ডিং অর্ডার নেই।</p>`;
+
+      processBox.innerHTML = processingOrders.length
+        ? processingOrders.map((o) => renderAdminOrderCard(o, "processing")).join("")
+        : `<p style="font-size:12px; color:var(--muted);">অর্ডার প্রসেস ঘরে কোনো অর্ডার নেই।</p>`;
+
+      deliveredBox.innerHTML = deliveredOrders.length
+        ? deliveredOrders.map((o) => renderAdminOrderCard(o, "delivered")).join("")
+        : `<p style="font-size:12px; color:var(--muted);">এখনো কোনো অর্ডার Delivered বক্সে সংরক্ষিত হয়নি।</p>`;
 
       renderOffers();
+      renderAdminCouriers();
 
       const pLog = document.getElementById("pixelLogPreview");
       if (pLog) {
@@ -3610,11 +3891,11 @@
       promptAdminUnlock();
     } else if (isAdminUnlocked()) {
       renderAdmin();
+      renderStockPage();
       populateAdminChatCustomers();
       renderAdminChat();
     }
 
-    // Initial cloud sync + auto-poll every 10 seconds for live orders & chats across phones
     syncFromCloud(false);
     setInterval(() => {
       if (getCleanDbUrl()) {
@@ -3624,4 +3905,3 @@
   </script>
 </body>
 </html>
-             
