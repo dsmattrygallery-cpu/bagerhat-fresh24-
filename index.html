@@ -464,6 +464,29 @@
       margin-bottom: 12px;
     }
 
+    .cache-menu-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 10px;
+    }
+
+    .cache-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin: 8px 0 10px;
+    }
+
+    .cache-stat-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+
     .folder-tabs {
       display: flex;
       gap: 6px;
@@ -685,7 +708,7 @@
       padding: 3px 8px;
       border-radius: 999px;
       font-weight: 700;
-    }
+      }
 
     .cloud-on { background: #d1fae5; color: #065f46; }
     .cloud-off { background: #fef3c7; color: #92400e; }
@@ -1109,7 +1132,7 @@
               <select id="checkoutThana" class="form-control" required>
                 <option value="">-- থানা সিলেক্ট করুন --</option>
               </select>
-            </div>
+               </div>
           </div>
 
           <div class="form-group">
@@ -1163,7 +1186,7 @@
           <button type="submit" id="placeOrderBtn" class="btn-primary" style="width:100%;">অর্ডার কনফার্ম করুন</button>
         </form>
       </div>
-       </section>
+    </section>
 
     <!-- SEPARATE STOCK MENU TAB -->
     <section id="tab-stock" style="display:none;">
@@ -1378,9 +1401,9 @@
         <div id="adminOffersList" style="margin-top:12px;"></div>
       </div>
 
-      <!-- FOLDER 6: WEBSITE SETTINGS, PIXEL & BACKUP -->
+      <!-- FOLDER 6: WEBSITE SETTINGS, CACHE MENU, PIXEL & BACKUP -->
       <div class="panel admin-folder" id="folder-website" style="display:none;">
-        <div class="section-title"><span>📁 ওয়েবসাইট সেটিং, পিক্সেল ও ব্যাকআপ</span></div>
+        <div class="section-title"><span>📁 ওয়েবসাইট সেটিং, ক্যাশ মেনু ও পিক্সেল</span></div>
 
         <div class="form-group">
           <label>কোম্পানির নাম</label>
@@ -1425,10 +1448,34 @@
           <input type="text" id="adminCustomPixelId" class="form-control" placeholder="যেমন: C123456789" />
         </div>
 
-        <button type="button" class="btn-primary" onclick="saveStoreSettings()">ওয়েবসাইট সেটিংস সেভ করুন</button>
+        <button type="button" class="btn-primary" onclick="saveStoreSettings()">ওয়েবসাইট ও পিক্সেল সেটিংস সেভ করুন</button>
+
+        <!-- CACHE MENU SECTION -->
+        <div class="cache-menu-box" id="websiteCacheMenu">
+          <div class="flex-between">
+            <div>
+              <strong style="font-size:14px;">🗂️ ক্যাশ মেনু (Cache Menu)</strong>
+              <div style="font-size:11px; color:var(--muted);">ব্রাউজার ক্যাশ ও লোকাল ডেটা নিয়ন্ত্রণ করুন</div>
+            </div>
+            <span class="cloud-pill cloud-on" id="cacheSizeBadge">ক্যাশ সক্রিয়</span>
+          </div>
+
+          <div class="cache-stat-grid" id="cacheStatsGrid">
+            <div class="cache-stat-card">পণ্য: <strong id="cacheProdCount">0</strong>টি</div>
+            <div class="cache-stat-card">অফার: <strong id="cacheOfferCount">0</strong>টি</div>
+            <div class="cache-stat-card">কুরিয়ার: <strong id="cacheCourierCount">0</strong>টি</div>
+            <div class="cache-stat-card">কার্ট আইটেম: <strong id="cacheCartCount">0</strong>টি</div>
+          </div>
+
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="btn-secondary" onclick="clearAppCacheOnly()">🧹 শুধু ক্যাশ ক্লিয়ার করুন</button>
+            <button type="button" class="btn-success" onclick="refreshCacheFromCloud()">☁️ ক্লাউড থেকে ক্যাশ রিফ্রেশ</button>
+            <button type="button" class="btn-danger" onclick="resetBrowserStorageAndReload()">🔄 সম্পূর্ণ স্টোরেজ রিসেট</button>
+          </div>
+        </div>
 
         <hr style="border:none; border-top:1px solid var(--border); margin:14px 0;" />
-        <div class="section-title"><span>ডেটা ব্যাকআপ, রিস্টোর ও স্টোরেজ সেটিং</span></div>
+        <div class="section-title"><span>ডেটা ব্যাকআপ ও রিস্টোর</span></div>
         <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
           <button type="button" class="btn-secondary" onclick="exportBackupJson()">JSON ব্যাকআপ ডাউনলোড</button>
           <button type="button" class="btn-success" onclick="exportOrdersCsv()">অর্ডার CSV ডাউনলোড</button>
@@ -1436,7 +1483,6 @@
             JSON রিস্টোর
             <input type="file" accept="application/json" style="display:none;" onchange="importBackupJson(event)" />
           </label>
-          <button type="button" class="btn-danger" onclick="resetBrowserStorageAndReload()">ক্যাশ ও স্টোরেজ ক্লিয়ার করুন</button>
         </div>
         <div id="pixelLogPreview" style="font-size:11px; color:var(--muted);"></div>
       </div>
@@ -1467,7 +1513,7 @@
 
   </main>
 
-  <!-- Order Success Popup Modal -->
+  <!-- Order & Product Notification Popup Modal -->
   <div class="modal-backdrop" id="orderSuccessModal" onclick="if(event.target===this) closeOrderSuccessModal()">
     <div class="modal-box" id="orderSuccessModalContent"></div>
   </div>
@@ -1503,7 +1549,7 @@
         </div>
       </div>
     </div>
-      </div>
+  </div>
 
   <!-- Notifications Modal -->
   <div class="modal-backdrop" id="notifModal" onclick="if(event.target===this) closeNotifModal()">
@@ -1551,7 +1597,7 @@
   <script>
     const FIREBASE_DB_URL = "https://bagerhat-fresh24-default-rtdb.asia-southeast1.firebasedatabase.app";
 
-    const STORAGE_KEY = "bagerhat_fresh24_clean_v10";
+    const STORAGE_KEY = "bagerhat_fresh24_clean_v11";
     const ADMIN_ACCESS_PIN = "2424";
     const ADMIN_UNLOCK_KEY = "bf24_admin_unlocked_session";
 
@@ -1690,6 +1736,51 @@
     let knownOrderIds = new Set((state.orders || []).map((o) => o.id));
     let knownChatIds = new Set((state.chatMessages || []).map((m) => m.id));
 
+    function updateCacheMenuStats() {
+      const prodEl = document.getElementById("cacheProdCount");
+      const offerEl = document.getElementById("cacheOfferCount");
+      const courierEl = document.getElementById("cacheCourierCount");
+      const cartEl = document.getElementById("cacheCartCount");
+      const badgeEl = document.getElementById("cacheSizeBadge");
+
+      if (prodEl) prodEl.textContent = (state.products || []).length;
+      if (offerEl) offerEl.textContent = (state.offers || []).length;
+      if (courierEl) courierEl.textContent = (state.couriers || []).length;
+      if (cartEl) cartEl.textContent = (state.cart || []).length;
+
+      if (badgeEl) {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY) || "";
+          const kb = (new Blob([raw]).size / 1024).toFixed(1);
+          badgeEl.textContent = `ক্যাশ: ${kb} KB`;
+        } catch (e) {
+          badgeEl.textContent = "ক্যাশ সক্রিয়";
+        }
+      }
+    }
+
+    function clearAppCacheOnly() {
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch (e) {}
+      state.cart = [];
+      state.appliedCoupon = null;
+      state.wishlist = [];
+      state.wishlistOnly = false;
+      state.selectedCategory = "সব পণ্য";
+      updateCartBadge();
+      renderCategories();
+      renderProducts();
+      renderCart();
+      updateCacheMenuStats();
+      showToast("অ্যাপ ক্যাশ ক্লিয়ার করা হয়েছে!");
+    }
+
+    async function refreshCacheFromCloud() {
+      await syncFromCloud(true);
+      updateCacheMenuStats();
+    }
+
     function getCleanDbUrl() {
       return (FIREBASE_DB_URL || "").trim().replace(/\/+$/, "");
     }
@@ -1704,7 +1795,7 @@
         badge.className = "cloud-pill cloud-off";
         badge.textContent = "লোকাল মোড";
       }
-    }
+      }
 
     async function cloudPut(path, data) {
       const base = getCleanDbUrl();
@@ -1735,13 +1826,18 @@
 
     async function syncProductsAndStoreToCloud() {
       const base = getCleanDbUrl();
-      if (!base) return;
-      await Promise.all([
-        cloudPut("storeConfig", state.store),
-        cloudPut("offers", state.offers),
-        cloudPut("couriers", state.couriers),
-        cloudPut("products", state.products)
-      ]);
+      if (!base) return false;
+      try {
+        await Promise.all([
+          cloudPut("storeConfig", state.store),
+          cloudPut("offers", state.offers),
+          cloudPut("couriers", state.couriers),
+          cloudPut("products", state.products)
+        ]);
+        return true;
+      } catch (e) {
+        return false;
+      }
     }
 
     async function syncOrderToCloud(order) {
@@ -2038,8 +2134,8 @@
       }
       if (acc.phone && document.getElementById("chatSenderPhone") && !document.getElementById("chatSenderPhone").value) {
         document.getElementById("chatSenderPhone").value = acc.phone;
-      }
     }
+      }
 
     function saveCustomerAccount(e) {
       e.preventDefault();
@@ -2282,7 +2378,7 @@
       renderOffers();
       await syncProductsAndStoreToCloud();
       showToast("নতুন অফার যুক্ত হয়েছে!");
-      }
+    }
 
     async function deleteOffer(index) {
       state.offers.splice(index, 1);
@@ -2308,6 +2404,9 @@
       }
       if (folderId === "folder-banner-offers") {
         renderOffers();
+      }
+      if (folderId === "folder-website") {
+        updateCacheMenuStats();
       }
     }
 
@@ -2399,7 +2498,6 @@
       }
     }
 
-    // Silent local cache without quota popups
     function saveState() {
       try {
         const minimalCache = {
@@ -2427,6 +2525,7 @@
           appliedCoupon: state.appliedCoupon
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(minimalCache));
+        updateCacheMenuStats();
       } catch (e) {
         try {
           localStorage.clear();
@@ -2451,6 +2550,28 @@
       el.classList.add("show");
       clearTimeout(window.__toastTimer);
       window.__toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
+    }
+
+    function showProductAddedPopup(productName) {
+      const modal = document.getElementById("orderSuccessModal");
+      const content = document.getElementById("orderSuccessModalContent");
+      if (modal && content) {
+        content.innerHTML = `
+          <div class="flex-between" style="margin-bottom:10px;">
+            <h3 style="color:var(--success);">✅ পন্য সফলভাবে যুক্ত হয়েছে</h3>
+            <button class="btn-danger" onclick="closeOrderSuccessModal()">বন্ধ</button>
+          </div>
+          <div style="font-size:13px; line-height:1.65;">
+            <p style="margin-bottom:10px;"><strong>${escapeHtml(productName)}</strong> স্টোরের তালিকা ও স্টকে সফলভাবে যুক্ত হয়েছে।</p>
+            <div style="display:flex; gap:8px;">
+              <button type="button" class="btn-primary" style="flex:1;" onclick="closeOrderSuccessModal(); switchTab('home');">হোমে পণ্য দেখুন</button>
+              <button type="button" class="btn-secondary" onclick="closeOrderSuccessModal();">ঠিক আছে</button>
+            </div>
+          </div>
+        `;
+        modal.classList.add("show");
+      }
+      showToast("পন্য সফলভাবে যুক্ত হয়েছে");
     }
 
     function copyText(val) {
@@ -2687,7 +2808,7 @@
         logoBox.innerHTML = `<img src="${logoUrl}" alt="Logo" />`;
       } else {
         logoBox.textContent = "BF";
-        }
+      }
 
       renderCourierDropdowns();
 
@@ -2706,7 +2827,7 @@
 
       if (metaPixelId) {
         injectMetaPixel(metaPixelId);
-      }
+        }
     }
 
     function switchTab(tabName) {
@@ -2751,6 +2872,7 @@
         renderAdminCouriers();
         populateAdminChatCustomers();
         renderAdminChat();
+        updateCacheMenuStats();
       }
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -2976,7 +3098,7 @@
           </div>
           <button type="submit" class="btn-secondary" style="width:100%;">রিভিউ জমা দিন</button>
         </form>
-        `;
+      `;
       document.getElementById("detailModal").classList.add("show");
     }
 
@@ -3183,7 +3305,7 @@
           btn.textContent = "অর্ডার কনফার্ম করুন";
           showToast(`${item.name} (${item.variationLabel}) পর্যাপ্ত স্টকে নেই।`);
           return;
-        }
+          }
       }
 
       for (const item of state.cart) {
@@ -3313,7 +3435,7 @@
           if (!variation || variation.stock < item.qty) {
             showToast("পুনরায় চালু করার মতো পর্যাপ্ত স্টক নেই।");
             return;
-            }
+          }
         }
         for (const item of order.items) {
           const product = state.products.find((p) => p.id === item.productId);
@@ -3606,7 +3728,7 @@
       previewBox.innerHTML = "";
 
       imgFiles.forEach((file) => {
-        compressImageFile(file, 420, 0.5, (compressedDataUrl) => {
+        compressImageFile(file, 360, 0.45, (compressedDataUrl) => {
           tempUploadedImages.push(compressedDataUrl);
           const img = document.createElement("img");
           img.src = compressedDataUrl;
@@ -3625,77 +3747,104 @@
         tag.className = "cloud-pill cloud-on";
         tag.textContent = "ভিডিও লিংক যুক্ত আছে";
         previewBox.appendChild(tag);
-        }
+      }
     }
 
     async function addNewProduct(e) {
       e.preventDefault();
       const publishBtn = document.getElementById("publishProductBtn");
       publishBtn.disabled = true;
-      publishBtn.textContent = "ক্লাউডে প্রকাশ হচ্ছে...";
+      publishBtn.textContent = "পণ্য যুক্ত হচ্ছে...";
 
-      const varRows = Array.from(document.querySelectorAll("#newVarTableBody tr"));
-      const variations = varRows
-        .map((row, i) => ({
-          id: "v_" + Date.now() + "_" + i,
-          label: row.querySelector(".var-name").value.trim(),
-          price: Number(row.querySelector(".var-price").value),
-          stock: Number(row.querySelector(".var-stock").value)
-        }))
-        .filter((v) => v.label && v.price > 0);
+      try {
+        const prodName = document.getElementById("newProdName").value.trim();
+        const prodCat = document.getElementById("newProdCat").value;
+        const prodBadge = document.getElementById("newProdBadge").value.trim();
+        const prodDesc = document.getElementById("newProdDesc").value.trim();
 
-      if (!variations.length) {
+        const varRows = Array.from(document.querySelectorAll("#newVarTableBody tr"));
+        const variations = varRows
+          .map((row, i) => ({
+            id: "v_" + Date.now() + "_" + i,
+            label: (row.querySelector(".var-name").value || "").trim(),
+            price: Number(row.querySelector(".var-price").value),
+            stock: Number(row.querySelector(".var-stock").value)
+          }))
+          .filter((v) => v.label && v.price > 0 && v.stock >= 0);
+
+        if (!prodName) {
+          showToast("অনুগ্রহ করে পণ্যের নাম লিখুন।");
+          return;
+          }
+
+        if (!variations.length) {
+          showToast("ভেরিয়েশনের সঠিক নাম ও দাম (০-এর বেশি) দিন।");
+          return;
+        }
+
+        const selectedFiles = Array.from(document.getElementById("newProdImages").files || []).slice(0, 3);
+        let finalImages = [...tempUploadedImages];
+
+        if (selectedFiles.length > 0 && finalImages.length === 0) {
+          finalImages = await Promise.all(
+            selectedFiles.map(
+              (file) =>
+                new Promise((resolve) => {
+                  compressImageFile(file, 360, 0.45, (dataUrl) => resolve(dataUrl));
+                })
+            )
+          );
+        }
+
+        if (!finalImages.length) {
+          finalImages = ["https://via.placeholder.com/300x200?text=Product"];
+        }
+
+        const vidLink = (document.getElementById("newProdVideoUrl")?.value || "").trim();
+
+        const newProduct = {
+          id: "p_" + Date.now(),
+          name: prodName,
+          category: prodCat,
+          badge: prodBadge,
+          description: prodDesc,
+          images: finalImages,
+          video: vidLink || "",
+          variations,
+          reviews: []
+        };
+
+        if (!Array.isArray(state.products)) state.products = [];
+        state.products.unshift(newProduct);
+        saveState();
+
+        syncProductsAndStoreToCloud().catch(() => {});
+
+        e.target.reset();
+        tempUploadedImages = [];
+        if (tempUploadedVideoUrl) {
+          URL.revokeObjectURL(tempUploadedVideoUrl);
+          tempUploadedVideoUrl = "";
+        }
+        document.getElementById("newMediaPreview").innerHTML = "";
+        document.getElementById("newVarTableBody").innerHTML = `
+          <tr>
+            <td><input type="text" class="form-control var-name" value="১কেজি" placeholder="যেমন: ১কেজি" required /></td>
+            <td><input type="number" class="form-control var-price" placeholder="দাম" min="1" required /></td>
+            <td><input type="number" class="form-control var-stock" value="20" min="0" required /></td>
+            <td><button type="button" class="btn-danger" onclick="removeVariationRow(this)">×</button></td>
+          </tr>
+        `;
+
+        renderCategories();
+        renderProducts();
+        renderStockPage();
+        updateCacheMenuStats();
+        showProductAddedPopup(prodName);
+      } finally {
         publishBtn.disabled = false;
         publishBtn.textContent = "পণ্য প্রকাশ করুন";
-        showToast("ভেরিয়েশনের সঠিক দাম (০-এর বেশি) দিন।");
-        return;
       }
-
-      const vidLink = (document.getElementById("newProdVideoUrl")?.value || "").trim();
-      const optionalVideo = vidLink || "";
-
-      const newProduct = {
-        id: "p_" + Date.now(),
-        name: document.getElementById("newProdName").value.trim(),
-        category: document.getElementById("newProdCat").value,
-        badge: document.getElementById("newProdBadge").value.trim(),
-        description: document.getElementById("newProdDesc").value.trim(),
-        images: tempUploadedImages.length
-          ? [...tempUploadedImages]
-          : ["https://via.placeholder.com/300x200?text=New+Product"],
-        video: optionalVideo,
-        variations,
-        reviews: []
-      };
-
-      state.products.unshift(newProduct);
-      saveState();
-      await syncProductsAndStoreToCloud();
-
-      e.target.reset();
-      tempUploadedImages = [];
-      if (tempUploadedVideoUrl) {
-        URL.revokeObjectURL(tempUploadedVideoUrl);
-        tempUploadedVideoUrl = "";
-      }
-      document.getElementById("newMediaPreview").innerHTML = "";
-      document.getElementById("newVarTableBody").innerHTML = `
-        <tr>
-          <td><input type="text" class="form-control var-name" value="১কেজি" placeholder="যেমন: ১কেজি" required /></td>
-          <td><input type="number" class="form-control var-price" placeholder="দাম" min="1" required /></td>
-          <td><input type="number" class="form-control var-stock" value="20" min="0" required /></td>
-          <td><button type="button" class="btn-danger" onclick="removeVariationRow(this)">×</button></td>
-        </tr>
-      `;
-
-      publishBtn.disabled = false;
-      publishBtn.textContent = "পণ্য প্রকাশ করুন";
-
-      renderCategories();
-      renderProducts();
-      renderStockPage();
-      showToast("নতুন পণ্য ক্লাউডে প্রকাশিত ও সিঙ্ক হয়েছে!");
-      switchTab("home");
     }
 
     async function updateVariationQuick(productId, varId) {
@@ -3904,6 +4053,7 @@
 
       renderOffers();
       renderAdminCouriers();
+      updateCacheMenuStats();
 
       const pLog = document.getElementById("pixelLogPreview");
       if (pLog) {
@@ -3935,6 +4085,7 @@
     updateNotifBadge();
     updateChatBadge();
     renderCustomerChat();
+    updateCacheMenuStats();
     trackPixelEvent("PageView");
 
     const params = new URLSearchParams(window.location.search);
