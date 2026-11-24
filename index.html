@@ -413,7 +413,7 @@
       border-radius: 8px;
       font-size: 12px;
       background: #fff;
-    }
+      }
 
     .price-stock {
       display: flex;
@@ -708,7 +708,7 @@
       padding: 3px 8px;
       border-radius: 999px;
       font-weight: 700;
-      }
+    }
 
     .cloud-on { background: #d1fae5; color: #065f46; }
     .cloud-off { background: #fef3c7; color: #92400e; }
@@ -798,7 +798,7 @@
       max-height: 88vh;
       overflow-y: auto;
       padding: 16px;
-    }
+      }
 
     .media-thumbs {
       display: flex;
@@ -1132,7 +1132,7 @@
               <select id="checkoutThana" class="form-control" required>
                 <option value="">-- থানা সিলেক্ট করুন --</option>
               </select>
-               </div>
+            </div>
           </div>
 
           <div class="form-group">
@@ -1597,7 +1597,7 @@
   <script>
     const FIREBASE_DB_URL = "https://bagerhat-fresh24-default-rtdb.asia-southeast1.firebasedatabase.app";
 
-    const STORAGE_KEY = "bagerhat_fresh24_clean_v11";
+    const STORAGE_KEY = "bagerhat_fresh24_clean_v12";
     const ADMIN_ACCESS_PIN = "2424";
     const ADMIN_UNLOCK_KEY = "bf24_admin_unlocked_session";
 
@@ -1735,6 +1735,7 @@
     let tempUploadedVideoUrl = "";
     let knownOrderIds = new Set((state.orders || []).map((o) => o.id));
     let knownChatIds = new Set((state.chatMessages || []).map((m) => m.id));
+    let recentAddedProductMap = new Map();
 
     function updateCacheMenuStats() {
       const prodEl = document.getElementById("cacheProdCount");
@@ -1795,7 +1796,7 @@
         badge.className = "cloud-pill cloud-off";
         badge.textContent = "লোকাল মোড";
       }
-      }
+    }
 
     async function cloudPut(path, data) {
       const base = getCleanDbUrl();
@@ -1872,6 +1873,42 @@
       if (manual) showToast("চ্যাট ক্লাউড থেকে আপডেট হয়েছে!");
     }
 
+    function mergeRemoteProductsWithRecent(remoteList) {
+      const now = Date.now();
+      const cleanedRemote = (Array.isArray(remoteList) ? remoteList : [])
+        .filter((p) => p && p.id && p.name)
+        .map((p) => ({
+          ...p,
+          variations: Array.isArray(p.variations) && p.variations.length
+            ? p.variations
+            : [{ id: "v_def_" + p.id, label: "১টি", price: Number(p.price) || 100, stock: Number(p.stock) || 10 }],
+          reviews: Array.isArray(p.reviews) ? p.reviews : []
+        }));
+
+      const remoteIds = new Set(cleanedRemote.map((p) => p.id));
+      const protectedRecent = [];
+
+      for (const [prodId, entry] of recentAddedProductMap.entries()) {
+        if (now - entry.addedAt > 30000) {
+          recentAddedProductMap.delete(prodId);
+          continue;
+        }
+        if (!remoteIds.has(prodId) && entry.product) {
+          protectedRecent.push(entry.product);
+        }
+      }
+
+      if (protectedRecent.length > 0) {
+        return [...protectedRecent, ...cleanedRemote];
+      }
+
+      if (cleanedRemote.length === 0 && Array.isArray(state.products) && state.products.length > 0) {
+        return state.products;
+      }
+
+      return cleanedRemote;
+    }
+
     async function syncFromCloud(manual = false) {
       const base = getCleanDbUrl();
       if (!base) {
@@ -1913,11 +1950,11 @@
       }
 
       if (Array.isArray(remoteProducts)) {
-        state.products = remoteProducts.map((p) => ({
-          ...p,
-          variations: Array.isArray(p.variations) ? p.variations : [],
-          reviews: Array.isArray(p.reviews) ? p.reviews : []
-        }));
+        const merged = mergeRemoteProductsWithRecent(remoteProducts);
+        state.products = merged;
+        if (recentAddedProductMap.size > 0) {
+          cloudPut("products", state.products).catch(() => {});
+        }
       } else if (remoteProducts === null) {
         await cloudPut("products", state.products);
       }
@@ -2134,8 +2171,8 @@
       }
       if (acc.phone && document.getElementById("chatSenderPhone") && !document.getElementById("chatSenderPhone").value) {
         document.getElementById("chatSenderPhone").value = acc.phone;
-    }
       }
+    }
 
     function saveCustomerAccount(e) {
       e.preventDefault();
@@ -2478,6 +2515,17 @@
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return structuredClone(DEFAULT_DATA);
         const parsed = JSON.parse(raw);
+        const loadedProducts =
+          Array.isArray(parsed.products) && parsed.products.length > 0
+            ? parsed.products.map((p) => ({
+                ...p,
+                variations: Array.isArray(p.variations) && p.variations.length
+                  ? p.variations
+                  : [{ id: "v_def_" + p.id, label: "১টি", price: Number(p.price) || 100, stock: Number(p.stock) || 10 }],
+                reviews: Array.isArray(p.reviews) ? p.reviews : []
+              }))
+            : structuredClone(DEFAULT_DATA.products);
+
         return {
           ...structuredClone(DEFAULT_DATA),
           ...parsed,
@@ -2488,10 +2536,7 @@
           chatMessages: Array.isArray(parsed.chatMessages) ? parsed.chatMessages : [],
           wishlist: Array.isArray(parsed.wishlist) ? parsed.wishlist : [],
           pixelEvents: Array.isArray(parsed.pixelEvents) ? parsed.pixelEvents : [],
-          products: (parsed.products || DEFAULT_DATA.products).map((p) => ({
-            ...p,
-            reviews: Array.isArray(p.reviews) ? p.reviews : []
-          }))
+          products: loadedProducts
         };
       } catch (e) {
         return structuredClone(DEFAULT_DATA);
@@ -2500,7 +2545,11 @@
 
     function saveState() {
       try {
-        const minimalCache = {
+        const compactProducts = (state.products || []).map((p) => ({
+          ...p,
+          images: (p.images || []).slice(0, 2)
+        }));
+        const cachePayload = {
           store: {
             name: state.store.name,
             address: state.store.address,
@@ -2516,6 +2565,7 @@
           },
           couriers: state.couriers,
           offers: state.offers,
+          products: compactProducts,
           customerAccount: state.customerAccount,
           selectedCategory: state.selectedCategory,
           wishlistOnly: state.wishlistOnly,
@@ -2524,11 +2574,19 @@
           cart: state.cart,
           appliedCoupon: state.appliedCoupon
         };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(minimalCache));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cachePayload));
         updateCacheMenuStats();
       } catch (e) {
         try {
-          localStorage.clear();
+          const fallbackPayload = {
+            store: state.store,
+            products: (state.products || []).map((p) => ({
+              ...p,
+              images: ["https://via.placeholder.com/300x200?text=Product"]
+            })),
+            cart: state.cart
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(fallbackPayload));
         } catch (err2) {}
       }
     }
@@ -2562,7 +2620,7 @@
             <button class="btn-danger" onclick="closeOrderSuccessModal()">বন্ধ</button>
           </div>
           <div style="font-size:13px; line-height:1.65;">
-            <p style="margin-bottom:10px;"><strong>${escapeHtml(productName)}</strong> স্টোরের তালিকা ও স্টকে সফলভাবে যুক্ত হয়েছে।</p>
+            <p style="margin-bottom:10px;"><strong>${escapeHtml(productName)}</strong> হোম পেজ, মার্কেটপ্লেস ও স্টকে সফলভাবে যুক্ত হয়েছে।</p>
             <div style="display:flex; gap:8px;">
               <button type="button" class="btn-primary" style="flex:1;" onclick="closeOrderSuccessModal(); switchTab('home');">হোমে পণ্য দেখুন</button>
               <button type="button" class="btn-secondary" onclick="closeOrderSuccessModal();">ঠিক আছে</button>
@@ -2827,7 +2885,7 @@
 
       if (metaPixelId) {
         injectMetaPixel(metaPixelId);
-        }
+      }
     }
 
     function switchTab(tabName) {
@@ -2847,6 +2905,10 @@
         if (navBtn) navBtn.classList.toggle("active", t === tabName);
       });
 
+      if (tabName === "home") {
+        renderCategories();
+        renderProducts();
+      }
       if (tabName === "cart") {
         hydrateCustomerAccountUI();
         renderCourierDropdowns();
@@ -2878,7 +2940,11 @@
     }
 
     function renderCategories() {
-      const cats = ["সব পণ্য", ...new Set(state.products.map((p) => p.category))];
+      const productCats = (state.products || []).map((p) => p.category).filter(Boolean);
+      const cats = ["সব পণ্য", ...new Set(productCats)];
+      if (state.selectedCategory && !cats.includes(state.selectedCategory)) {
+        state.selectedCategory = "সব পণ্য";
+      }
       const row = document.getElementById("categoryRow");
       row.innerHTML = cats
         .map(
@@ -2890,6 +2956,7 @@
 
     function selectCategory(cat) {
       state.selectedCategory = cat;
+      saveState();
       renderCategories();
       renderProducts();
     }
@@ -2915,8 +2982,11 @@
     }
 
     function getActiveVariation(product) {
+      const vars = Array.isArray(product.variations) && product.variations.length
+        ? product.variations
+        : [{ id: "v_def_" + product.id, label: "১টি", price: 100, stock: 10 }];
       const chosenId = state.selectedVariationByProduct[product.id];
-      return product.variations.find((v) => v.id === chosenId) || product.variations[0];
+      return vars.find((v) => v.id === chosenId) || vars[0];
     }
 
     function onVariationChange(productId, varId) {
@@ -2938,14 +3008,16 @@
       wishBtn.textContent = `${state.wishlistOnly ? "♥ উইশলিস্ট (সক্রিয়)" : "♡ উইশলিস্ট"} (${state.wishlist.length})`;
 
       const query = (document.getElementById("searchInput").value || "").trim().toLowerCase();
-      const filtered = state.products.filter((p) => {
+      const filtered = (state.products || []).filter((p) => {
+        if (!p || !p.name) return false;
         const catOk = state.selectedCategory === "সব পণ্য" || p.category === state.selectedCategory;
         const wishOk = !state.wishlistOnly || state.wishlist.includes(p.id);
+        const vars = Array.isArray(p.variations) ? p.variations : [];
         const searchOk =
           !query ||
           p.name.toLowerCase().includes(query) ||
-          p.category.toLowerCase().includes(query) ||
-          p.variations.some((v) => v.label.toLowerCase().includes(query));
+          (p.category || "").toLowerCase().includes(query) ||
+          vars.some((v) => (v.label || "").toLowerCase().includes(query));
         return catOk && wishOk && searchOk;
       });
 
@@ -2959,9 +3031,12 @@
 
       grid.innerHTML = filtered
         .map((p) => {
+          const vars = Array.isArray(p.variations) && p.variations.length
+            ? p.variations
+            : [{ id: "v_def_" + p.id, label: "১টি", price: 100, stock: 10 }];
           const activeVar = getActiveVariation(p);
           const imgSrc = (p.images && p.images[0]) || "https://via.placeholder.com/300x200?text=Product";
-          const isOut = !activeVar || activeVar.stock <= 0;
+          const isOut = !activeVar || Number(activeVar.stock) <= 0;
           const isWished = state.wishlist.includes(p.id);
 
           return `
@@ -2974,12 +3049,12 @@
               </div>
               <div class="product-body">
                 <div class="product-cat-row">
-                  <span>${escapeHtml(p.category)}</span>
+                  <span>${escapeHtml(p.category || "সাধারণ")}</span>
                   <span class="rating-pill" onclick="openProductModal('${p.id}')">${getProductRatingSummary(p)}</span>
                 </div>
                 <div class="product-title" onclick="openProductModal('${p.id}')">${escapeHtml(p.name)}</div>
                 <select class="var-select" onchange="onVariationChange('${p.id}', this.value)">
-                  ${p.variations
+                  ${vars
                     .map(
                       (v) =>
                         `<option value="${v.id}" ${activeVar && v.id === activeVar.id ? "selected" : ""}>${escapeHtml(v.label)} = ৳${v.price}</option>`
@@ -3003,6 +3078,9 @@
     function openProductModal(productId) {
       const p = state.products.find((item) => item.id === productId);
       if (!p) return;
+      const vars = Array.isArray(p.variations) && p.variations.length
+        ? p.variations
+        : [{ id: "v_def_" + p.id, label: "১টি", price: 100, stock: 10 }];
       const activeVar = getActiveVariation(p);
 
       trackPixelEvent("ViewContent", {
@@ -3017,7 +3095,7 @@
         ...(p.video ? `<video src="${p.video}" controls></video>` : [])
       ].join("");
 
-      const varRowsHtml = p.variations
+      const varRowsHtml = vars
         .map((v) => `<tr><td>${escapeHtml(v.label)}</td><td>৳${v.price}</td><td>${v.stock}টি</td></tr>`)
         .join("");
 
@@ -3044,7 +3122,7 @@
           <button class="btn-danger" onclick="closeModal()">বন্ধ</button>
         </div>
         <div class="product-cat-row" style="margin-bottom:8px;">
-          <span>ক্যাটাগরি: ${escapeHtml(p.category)}</span>
+          <span>ক্যাটাগরি: ${escapeHtml(p.category || "সাধারণ")}</span>
           <span class="rating-pill">${getProductRatingSummary(p)}</span>
         </div>
         <div class="media-thumbs">${thumbsHtml}</div>
@@ -3056,7 +3134,7 @@
         <div class="form-group">
           <label>ভেরিয়েশন নির্বাচন করুন</label>
           <select id="modalVarSelect" class="form-control">
-            ${p.variations
+            ${vars
               .map(
                 (v) =>
                   `<option value="${v.id}" ${activeVar && v.id === activeVar.id ? "selected" : ""}>${escapeHtml(v.label)} = ৳${v.price} (স্টক: ${v.stock})</option>`
@@ -3136,7 +3214,10 @@
     function addToCart(productId, variationId) {
       const product = state.products.find((p) => p.id === productId);
       if (!product) return;
-      const variation = product.variations.find((v) => v.id === variationId) || product.variations[0];
+      const vars = Array.isArray(product.variations) && product.variations.length
+        ? product.variations
+        : [{ id: "v_def_" + product.id, label: "১টি", price: 100, stock: 10 }];
+      const variation = vars.find((v) => v.id === variationId) || vars[0];
       if (!variation || variation.stock <= 0) {
         showToast("এই ভেরিয়েশনের স্টক শেষ হয়ে গেছে।");
         return;
@@ -3305,7 +3386,7 @@
           btn.textContent = "অর্ডার কনফার্ম করুন";
           showToast(`${item.name} (${item.variationLabel}) পর্যাপ্ত স্টকে নেই।`);
           return;
-          }
+        }
       }
 
       for (const item of state.cart) {
@@ -3342,7 +3423,7 @@
         district: custDistrict,
         thana: custThana,
         street: custStreet
-      };
+         };
 
       const order = {
         id: "ORD-" + Date.now().toString().slice(-6),
@@ -3766,19 +3847,19 @@
         const variations = varRows
           .map((row, i) => ({
             id: "v_" + Date.now() + "_" + i,
-            label: (row.querySelector(".var-name").value || "").trim(),
+            label: (row.querySelector(".var-name").value || "").trim() || "১টি",
             price: Number(row.querySelector(".var-price").value),
             stock: Number(row.querySelector(".var-stock").value)
           }))
-          .filter((v) => v.label && v.price > 0 && v.stock >= 0);
+          .filter((v) => v.price > 0 && v.stock >= 0);
 
         if (!prodName) {
           showToast("অনুগ্রহ করে পণ্যের নাম লিখুন।");
           return;
-          }
+        }
 
         if (!variations.length) {
-          showToast("ভেরিয়েশনের সঠিক নাম ও দাম (০-এর বেশি) দিন।");
+          showToast("ভেরিয়েশনের সঠিক দাম (০-এর বেশি) দিন।");
           return;
         }
 
@@ -3816,9 +3897,17 @@
 
         if (!Array.isArray(state.products)) state.products = [];
         state.products.unshift(newProduct);
-        saveState();
+        recentAddedProductMap.set(newProduct.id, {
+          addedAt: Date.now(),
+          product: structuredClone(newProduct)
+        });
 
-        syncProductsAndStoreToCloud().catch(() => {});
+        state.selectedCategory = "সব পণ্য";
+        state.wishlistOnly = false;
+        document.getElementById("searchInput").value = "";
+
+        saveState();
+        await syncProductsAndStoreToCloud();
 
         e.target.reset();
         tempUploadedImages = [];
@@ -3834,7 +3923,7 @@
             <td><input type="number" class="form-control var-stock" value="20" min="0" required /></td>
             <td><button type="button" class="btn-danger" onclick="removeVariationRow(this)">×</button></td>
           </tr>
-        `;
+          `;
 
         renderCategories();
         renderProducts();
@@ -3872,6 +3961,7 @@
     async function deleteProduct(productId) {
       state.products = state.products.filter((p) => p.id !== productId);
       state.wishlist = state.wishlist.filter((id) => id !== productId);
+      recentAddedProductMap.delete(productId);
       saveState();
       await syncProductsAndStoreToCloud();
       renderCategories();
@@ -3886,7 +3976,11 @@
 
       prodContainer.innerHTML = state.products
         .map((p) => {
-          const varEditors = p.variations
+          const vars = Array.isArray(p.variations) && p.variations.length
+            ? p.variations
+            : [{ id: "v_def_" + p.id, label: "১টি", price: 100, stock: 10 }];
+
+          const varEditors = vars
             .map(
               (v) => `
               <div class="flex-between" style="margin-top:6px; gap:6px;">
@@ -3904,7 +3998,7 @@
               <div class="flex-between">
                 <div>
                   <div style="font-weight:700; font-size:13px;">${escapeHtml(p.name)}</div>
-                  <div style="font-size:11px; color:var(--muted);">${escapeHtml(p.category)} • রিভিউ: ${(p.reviews || []).length}</div>
+                  <div style="font-size:11px; color:var(--muted);">${escapeHtml(p.category || "সাধারণ")} • রিভিউ: ${(p.reviews || []).length}</div>
                 </div>
                 <button type="button" class="btn-danger" onclick="deleteProduct('${p.id}')">ডিলিট</button>
               </div>
